@@ -51,3 +51,6 @@ crashlytics-build.properties
 fabric.properties
 
 .idea/
+/frontend/node_modules/
+/frontend/old/
+/frontend/dist/

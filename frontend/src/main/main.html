@@ -1,0 +1,48 @@
+<md-toolbar class="md-hue-2">
+	<div class="md-toolbar-tools">
+		<md-button class="md-icon-button" aria-label="Settings" ng-disabled="true">
+			<md-icon>menu</md-icon>
+		</md-button>
+
+		<h2 flex md-truncate>Can I have a drink?</h2>
+	</div>
+</md-toolbar>
+
+<main id="main">
+	<h1 md-colors="{color: 'default-primary'}">Can I have a drink?</h1>
+
+	<md-tabs md-dynamic-height>
+		<md-tab label="Mixable Drinks">
+			<md-list>
+				<md-list-item ng-repeat="drink in ctrl.mixableDrinks">
+					<span>{{drink.Anzahl}}x {{drink.Cocktail}}</span>
+				</md-list-item>
+			</md-list>
+		</md-tab>
+		<md-tab label="Recipes">
+			<md-list>
+				<md-list-item ng-repeat="cocktail in ctrl.cocktails">
+					<span>{{cocktail.Name}}</span>
+				</md-list-item>
+			</md-list>
+		</md-tab>
+		<md-tab label="Inventory">
+			<md-list>
+				<md-list-item ng-repeat="item in ctrl.inventory" class="md-2-line">
+					<div class="md-list-item-text" layout="column">
+						<h3>{{item.Name}}</h3>
+						<p>{{item.Inventarmenge}} {{item.Einheit}}</p>
+					</div>
+				</md-list-item>
+			</md-list>
+		</md-tab>
+		<md-tab label="Ingredients">
+			<md-list>
+				<md-list-item ng-repeat="ingredient in ctrl.ingredients">
+					<span>{{ingredient.Name}}</span>
+				</md-list-item>
+			</md-list>
+		</md-tab>
+	</md-tabs>
+
+</main>
