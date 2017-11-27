@@ -1,17 +1,11 @@
 <md-toolbar class="md-hue-2">
 	<div class="md-toolbar-tools">
-		<md-button class="md-icon-button" aria-label="Settings" ng-disabled="true">
-			<md-icon>menu</md-icon>
-		</md-button>
-
 		<h2 flex md-truncate>Can I have a drink?</h2>
 	</div>
 </md-toolbar>
 
-<main id="main">
-	<h1 md-colors="{color: 'default-primary'}">Can I have a drink?</h1>
-
-	<md-tabs md-dynamic-height>
+<main id="main" layout="column" flex="auto">
+	<md-tabs md-selected="ctrl.selectedTab" flex="auto">
 		<md-tab label="Mixable Drinks">
 			<md-list>
 				<md-list-item ng-repeat="drink in ctrl.mixableDrinks">
@@ -44,5 +38,33 @@
 			</md-list>
 		</md-tab>
 	</md-tabs>
+
+	<md-fab-toolbar md-direction="left">
+		<md-fab-trigger>
+			<md-button class="md-fab">
+				<md-icon>add</md-icon>
+			</md-button>
+		</md-fab-trigger>
+
+		<md-toolbar>
+			<!--<md-fab-actions class="md-toolbar-tools">
+				<md-button aria-label="comment" class="md-icon-button">
+					<md-icon md-svg-src="img/icons/ic_comment_24px.svg"></md-icon>
+				</md-button>
+				<md-button aria-label="label" class="md-icon-button">
+					<md-icon md-svg-src="img/icons/ic_label_24px.svg"></md-icon>
+				</md-button>
+				<md-button aria-label="photo" class="md-icon-button">
+					<md-icon md-svg-src="img/icons/ic_photo_24px.svg"></md-icon>
+				</md-button>
+			</md-fab-actions>-->
+
+			<md-input-container>
+				<label>New cocktail</label>
+				<input>
+			</md-input-container>
+		</md-toolbar>
+	</md-fab-toolbar>
+
 
 </main>

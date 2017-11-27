@@ -5,3 +5,21 @@
     text-align: center;
   }
 }
+
+md-fab-toolbar md-toolbar md-input-container {
+  opacity: 0;
+  -webkit-transform: scale(0);
+  transform: scale(0);
+  -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+  transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+  -webkit-transition-duration: 0.15s;
+  transition-duration: 0.15s;
+
+  transition-delay: 200ms;
+}
+
+md-fab-toolbar.md-is-open md-input-container {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
