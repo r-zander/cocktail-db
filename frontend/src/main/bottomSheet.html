@@ -1,0 +1,36 @@
+<md-bottom-sheet md-colors="{'background-color': 'background', 'border-top-color': 'background-hue-2'}">
+	<div style="max-width: 600px; margin: 0 auto" layout="column">
+		<md-input-container>
+			<label>New cocktail</label>
+			<input ng-model="cocktail.Name"/>
+		</md-input-container>
+
+		<div ng-repeat="ingredient in cocktail.ingredients">
+			<md-autocomplete
+					md-selected-item="ingredient.Name"
+					md-selected-item-change="ctrl.ensureIngredientsCapacity($index+2)"
+					md-search-text="searchText"
+					md-items="item in ctrl.querySearch(searchText)"
+					md-item-text="item.Name"
+					md-min-length="0"
+					placeholder="Ingredient">
+				<md-item-template>
+					<span md-highlight-text="searchText" md-highlight-flags="^i">{{item.Name}}</span>
+				</md-item-template>
+				<md-not-found>
+					No ingredients matching "{{searchText}}" were found.
+					<a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
+				</md-not-found>
+			</md-autocomplete>
+		</div>
+		<div layout="row" layout-align="end center">
+			<md-button class="md-raised">
+				Cancel
+			</md-button>
+			<md-button class="md-raised md-accent">
+				Save
+			</md-button>
+		</div>
+	</div>
+
+</md-bottom-sheet>

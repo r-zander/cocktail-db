@@ -4,42 +4,51 @@
 	</div>
 </md-toolbar>
 
-<main id="main" layout="column" flex="auto">
-	<md-tabs md-selected="ctrl.selectedTab" flex="auto">
-		<md-tab label="Mixable Drinks">
-			<md-list>
-				<md-list-item ng-repeat="drink in ctrl.mixableDrinks">
-					<span>{{drink.Anzahl}}x {{drink.Cocktail}}</span>
-				</md-list-item>
-			</md-list>
-		</md-tab>
-		<md-tab label="Recipes">
-			<md-list>
-				<md-list-item ng-repeat="cocktail in ctrl.cocktails">
-					<span>{{cocktail.Name}}</span>
-				</md-list-item>
-			</md-list>
-		</md-tab>
-		<md-tab label="Inventory">
-			<md-list>
-				<md-list-item ng-repeat="item in ctrl.inventory" class="md-2-line">
-					<div class="md-list-item-text" layout="column">
-						<h3>{{item.Name}}</h3>
-						<p>{{item.Inventarmenge}} {{item.Einheit}}</p>
-					</div>
-				</md-list-item>
-			</md-list>
-		</md-tab>
-		<md-tab label="Ingredients">
-			<md-list>
-				<md-list-item ng-repeat="ingredient in ctrl.ingredients">
-					<span>{{ingredient.Name}}</span>
-				</md-list-item>
-			</md-list>
-		</md-tab>
-	</md-tabs>
+<main id="main" layout="column" flex="auto" layout-align="start center">
+	<div class="tab-wrapper" md-whiteframe="1" md-colors="{'background-color': 'background-hue-1'}">
+		<md-tabs md-selected="ctrl.selectedTab"
+		         md-stretch-tabs="always"
+		         flex="auto">
+			<md-tab label="Mixable Drinks">
+				<md-list>
+					<md-list-item ng-repeat="drink in ctrl.mixableDrinks">
+						<span>{{drink.Anzahl}}x {{drink.Cocktail}}</span>
+					</md-list-item>
+				</md-list>
+			</md-tab>
+			<md-tab label="Recipes">
+				<md-list>
+					<md-list-item ng-repeat="cocktail in ctrl.cocktails">
+						<span>{{cocktail.Name}}</span>
+					</md-list-item>
+				</md-list>
+			</md-tab>
+			<md-tab label="Inventory">
+				<md-list>
+					<md-list-item ng-repeat="item in ctrl.inventory" class="md-2-line">
+						<div class="md-list-item-text" layout="column">
+							<h3>{{item.Name}}</h3>
+							<p>{{item.Inventarmenge}} {{item.Einheit}}</p>
+						</div>
+					</md-list-item>
+				</md-list>
+			</md-tab>
+			<md-tab label="Ingredients">
+				<md-list>
+					<md-list-item ng-repeat="ingredient in ctrl.ingredients">
+						<span>{{ingredient.Name}}</span>
+					</md-list-item>
+				</md-list>
+			</md-tab>
+		</md-tabs>
 
-	<md-fab-toolbar md-direction="left">
+		<md-button class="md-fab md-fab-bottom-right"
+		           ng-click="ctrl.openBottomSheet()"
+		           ng-hide="ctrl.selectedTab === 0">
+			<md-icon>add</md-icon>
+		</md-button>
+	</div>
+	<!--<md-fab-toolbar md-direction="left">
 		<md-fab-trigger>
 			<md-button class="md-fab">
 				<md-icon>add</md-icon>
@@ -47,7 +56,7 @@
 		</md-fab-trigger>
 
 		<md-toolbar>
-			<!--<md-fab-actions class="md-toolbar-tools">
+			&lt;!&ndash;<md-fab-actions class="md-toolbar-tools">
 				<md-button aria-label="comment" class="md-icon-button">
 					<md-icon md-svg-src="img/icons/ic_comment_24px.svg"></md-icon>
 				</md-button>
@@ -57,14 +66,11 @@
 				<md-button aria-label="photo" class="md-icon-button">
 					<md-icon md-svg-src="img/icons/ic_photo_24px.svg"></md-icon>
 				</md-button>
-			</md-fab-actions>-->
+			</md-fab-actions>&ndash;&gt;
 
-			<md-input-container>
-				<label>New cocktail</label>
-				<input>
-			</md-input-container>
+
 		</md-toolbar>
-	</md-fab-toolbar>
+	</md-fab-toolbar>-->
 
 
 </main>
