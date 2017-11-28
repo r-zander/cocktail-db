@@ -1,6 +1,5 @@
 @import 'src/theme-colors';
 
-
 #main {
   > h1 {
     text-align: center;
@@ -21,4 +20,11 @@
   .md-fab.ng-hide {
     transform: scale(0);
   }
+}
+
+.layout-fill-link {
+  display: block;
+  height: 100%;
+  margin: 0 -15px;
+  padding: 0 15px;
 }

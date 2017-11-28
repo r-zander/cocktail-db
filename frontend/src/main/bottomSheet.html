@@ -20,8 +20,31 @@
                     <span md-highlight-text="searchText" md-highlight-flags="^i">{{item.Name}}</span>
                 </md-item-template>
                 <md-not-found>
-                    No ingredients matching "{{searchText}}" were found.
-                    <a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
+                    <a ng-click="ctrl.newIngredient(ingredient, searchText)"
+                       class="layout-fill-link">
+                        Add "{{searchText}}"
+                    </a>
+                </md-not-found>
+            </md-autocomplete>
+
+            <md-autocomplete
+                    ng-if="ingredient.item.new"
+                    class="hide-md-errors-spacer"
+                    md-selected-item="ingredient.item.Einheit"
+                    md-selected-item-change="ctrl.ensureIngredientsCapacity($index+2)"
+                    md-search-text="searchText"
+                    md-items="item in ctrl.querySearch(searchText)"
+                    md-item-text="item.Name"
+                    md-min-length="0"
+                    md-floating-label="Ingredient">
+                <md-item-template>
+                    <span md-highlight-text="searchText" md-highlight-flags="^i">{{item.Name}}</span>
+                </md-item-template>
+                <md-not-found>
+                    <a ng-click="ctrl.newIngredient(ingredient, searchText)"
+                       class="layout-fill-link">
+                        Add "{{searchText}}"
+                    </a>
                 </md-not-found>
             </md-autocomplete>
 
@@ -30,16 +53,22 @@
                 <input type="number" ng-model="ingredient.amount"/>
             </md-input-container>
         </div>
-        <div layout="row" layout-align="end center">
-            <md-button class="md-raised"
-                       ng-click="ctrl.cancel()">
-                Cancel
-            </md-button>
-            <md-button class="md-raised md-accent"
-                       ng-click="ctrl.save()"
-                       ng-disabled="!ctrl.isValid()">
-                Save
-            </md-button>
+        <div layout="row" layout-align="space-between center">
+            <div class="md-secondary md-body-1">
+                A cocktail needs a name and at least 2 ingredients.
+            </div>
+
+            <div>
+                <md-button class="md-raised"
+                           ng-click="ctrl.cancel()">
+                    Cancel
+                </md-button>
+                <md-button class="md-raised md-accent"
+                           ng-click="ctrl.save()"
+                           ng-disabled="!ctrl.isValid()">
+                    Save
+                </md-button>
+            </div>
         </div>
     </div>
 
