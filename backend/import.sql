@@ -1,10 +1,11 @@
 CREATE DATABASE  IF NOT EXISTS `cocktail_db` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `cocktail_db`;
--- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
+
+-- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: cocktail_db
+-- Host: localhost    Database: cocktail_db
 -- ------------------------------------------------------
--- Server version	5.5.5-10.1.28-MariaDB
+-- Server version	5.7.16-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -40,6 +41,35 @@ LOCK TABLES `cocktail` WRITE;
 INSERT INTO `cocktail` VALUES (1,'Gin Tonic'),(2,'Negroni'),(3,'VAC');
 /*!40000 ALTER TABLE `cocktail` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `cocktail liste`
+--
+
+DROP TABLE IF EXISTS `cocktail liste`;
+/*!50001 DROP VIEW IF EXISTS `cocktail liste`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `cocktail liste` AS SELECT 
+ 1 AS `Cocktail`,
+ 1 AS `Zutat`,
+ 1 AS `Menge`,
+ 1 AS `Inventarmenge`,
+ 1 AS `Einheit`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `machbare_cocktails`
+--
+
+DROP TABLE IF EXISTS `machbare_cocktails`;
+/*!50001 DROP VIEW IF EXISTS `machbare_cocktails`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `machbare_cocktails` AS SELECT 
+ 1 AS `Cocktail`,
+ 1 AS `Anzahl`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `rezept`
@@ -93,6 +123,50 @@ LOCK TABLES `zutat` WRITE;
 INSERT INTO `zutat` VALUES (1,'Gin',400,'ml'),(2,'Tonic Water',1000,'ml'),(3,'Zitrone',10,'Scheibe'),(4,'Campari',0,'ml'),(5,'Roter Wermut',0,'ml');
 /*!40000 ALTER TABLE `zutat` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'cocktail_db'
+--
+
+--
+-- Dumping routines for database 'cocktail_db'
+--
+
+--
+-- Final view structure for view `cocktail liste`
+--
+
+/*!50001 DROP VIEW IF EXISTS `cocktail liste`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `cocktail liste` AS select `c`.`Name` AS `Cocktail`,`z`.`Name` AS `Zutat`,`r`.`Menge` AS `Menge`,`z`.`Inventarmenge` AS `Inventarmenge`,`z`.`Einheit` AS `Einheit` from ((`rezept` `r` join `cocktail` `c` on((`r`.`Cocktail_ID` = `c`.`ID`))) join `zutat` `z` on((`r`.`Zutat_ID` = `z`.`ID`))) order by `c`.`Name` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `machbare_cocktails`
+--
+
+/*!50001 DROP VIEW IF EXISTS `machbare_cocktails`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `machbare_cocktails` AS select `c`.`Name` AS `Cocktail`,floor(min((`z`.`Inventarmenge` / `r`.`Menge`))) AS `Anzahl` from ((`rezept` `r` join `cocktail` `c` on((`c`.`ID` = `r`.`Cocktail_ID`))) join `zutat` `z` on((`z`.`ID` = `r`.`Zutat_ID`))) group by `c`.`ID` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -103,35 +177,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-07 23:10:20
-
-CREATE 
-    ALGORITHM = UNDEFINED 
-    DEFINER = `root`@`localhost` 
-    SQL SECURITY DEFINER
-VIEW `cocktail liste` AS
-    SELECT 
-        `c`.`Name` AS `Cocktail`,
-        `z`.`Name` AS `Zutat`,
-        `r`.`Menge` AS `Menge`,
-        `z`.`Inventarmenge` AS `Inventarmenge`,
-        `z`.`Einheit` AS `Einheit`
-    FROM
-        ((`rezept` `r`
-        JOIN `cocktail` `c` ON ((`r`.`Cocktail_ID` = `c`.`ID`)))
-        JOIN `zutat` `z` ON ((`r`.`zutat_ID` = `z`.`ID`)))
-    ORDER BY `c`.`Name`;
-
-    CREATE 
-    ALGORITHM = UNDEFINED 
-    DEFINER = `root`@`localhost` 
-    SQL SECURITY DEFINER
-VIEW `machbare cocktails` AS
-    SELECT 
-        `c`.`Name` AS `Cocktail`,
-        FLOOR(MIN((`z`.`Inventarmenge` / `r`.`Menge`))) AS `Anzahl`
-    FROM
-        ((`rezept` `r`
-        JOIN `cocktail` `c` ON ((`c`.`ID` = `r`.`Cocktail_ID`)))
-        JOIN `zutat` `z` ON ((`z`.`ID` = `r`.`zutat_ID`)))
-    GROUP BY `c`.`ID`;
+-- Dump completed on 2017-11-28  9:19:51
