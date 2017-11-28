@@ -1,9 +1,5 @@
 @import 'src/theme-colors';
 
-body {
-  // FIXME BottomSheet
-  overflow: hidden;
-}
 
 #main {
   > h1 {
@@ -25,35 +21,4 @@ body {
   .md-fab.ng-hide {
     transform: scale(0);
   }
-}
-
-// For some reason animations are disabled on leave & hide
-// so re-enable them just like regular transitions of the button
-// to create the appearing effect
-.md-button.md-fab.ng-hide,
-.md-button.md-fab.ng-leave {
-  -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-  transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-  -webkit-transition-property: -webkit-transform;
-  transition-property: -webkit-transform;
-  transition-property: transform;
-  transition-property: transform, -webkit-transform;
-}
-
-md-fab-toolbar md-toolbar md-input-container {
-  opacity: 0;
-  -webkit-transform: scale(0);
-  transform: scale(0);
-  -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-  transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-  -webkit-transition-duration: 0.15s;
-  transition-duration: 0.15s;
-
-  transition-delay: 200ms;
-}
-
-md-fab-toolbar.md-is-open md-input-container {
-  opacity: 1;
-  -webkit-transform: scale(1);
-  transform: scale(1);
 }

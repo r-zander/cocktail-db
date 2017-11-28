@@ -1,0 +1,84 @@
+/**
+ * Contains modifications and fixes to the Angular Material Components
+ */
+@import 'src/theme-colors';
+
+/***************
+ md-fab
+ */
+// For some reason animations are disabled on leave & hide
+// so re-enable them just like regular transitions of the button
+// to create the appearing effect
+.md-button.md-fab.ng-hide,
+.md-button.md-fab.ng-leave {
+  -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+  transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+  -webkit-transition-property: -webkit-transform;
+  transition-property: -webkit-transform;
+  transition-property: transform;
+  transition-property: transform, -webkit-transform;
+}
+
+///***************
+// md-fab-toolbar
+// */
+//md-fab-toolbar md-toolbar md-input-container {
+//  opacity: 0;
+//  -webkit-transform: scale(0);
+//  transform: scale(0);
+//  -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+//  transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+//  -webkit-transition-duration: 0.15s;
+//  transition-duration: 0.15s;
+//
+//  transition-delay: 200ms;
+//}
+//
+//md-fab-toolbar.md-is-open md-input-container {
+//  opacity: 1;
+//  -webkit-transform: scale(1);
+//  transform: scale(1);
+//}
+
+
+/***************
+ $mdBottomSheet
+ */
+body {
+  // FIXME BottomSheet
+  overflow: hidden;
+}
+
+/***************
+ md-autocomplete
+ */
+md-autocomplete {
+  background: none !important;
+  &[disabled]:not([md-floating-label]) {
+    background: none !important;;
+  }
+  button {
+    md-icon {
+      path {
+        fill: $foreground-2 !important;;
+      }
+    }
+    &:after {
+      background: rgba($grey-300, 0.3) !important;;
+    }
+  }
+}
+.md-autocomplete-suggestions-container {
+  background: $background-hue-1 !important;;
+  li {
+    color: $foreground-1 !important;;
+    .highlight {
+      color: $primary !important;;
+    }
+    &:hover,
+    &.selected {
+      background: $grey-700 !important;;
+    }
+  }
+}
+

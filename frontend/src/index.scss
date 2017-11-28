@@ -58,3 +58,9 @@ html {
 .md-hint {
   color: $foreground-3;
 }
+
+.hide-md-errors-spacer {
+  .md-errors-spacer {
+    display: none;
+  }
+}

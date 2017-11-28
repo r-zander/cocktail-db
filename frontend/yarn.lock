@@ -115,43 +115,47 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
-angular-animate@~1.5.11:
-  version "1.5.11"
-  resolved "https://registry.yarnpkg.com/angular-animate/-/angular-animate-1.5.11.tgz#1baa43c303d1b93c4e6aa89453b39114b7a1c669"
+angular-animate@~1.6:
+  version "1.6.7"
+  resolved "https://registry.yarnpkg.com/angular-animate/-/angular-animate-1.6.7.tgz#bc6dbe6a190d019a6fbb2c7373d40f01cfd75899"
 
-angular-aria@~1.5.11:
-  version "1.5.11"
-  resolved "https://registry.yarnpkg.com/angular-aria/-/angular-aria-1.5.11.tgz#26963ac336891ced7b199e59afd7e9b25e53d6a6"
+angular-aria@~1.6:
+  version "1.6.7"
+  resolved "https://registry.yarnpkg.com/angular-aria/-/angular-aria-1.6.7.tgz#a108a10fc6616914f6e56a6c2072da87f4e6d342"
 
-angular-cookies@~1.5.11:
-  version "1.5.11"
-  resolved "https://registry.yarnpkg.com/angular-cookies/-/angular-cookies-1.5.11.tgz#88558de7c5044dcc3abeb79614d7ef8107ba49c0"
+angular-cookies@~1.6:
+  version "1.6.7"
+  resolved "https://registry.yarnpkg.com/angular-cookies/-/angular-cookies-1.6.7.tgz#841b8c1ba6d101d886f1676bda4dc1ad9095ad4c"
 
 angular-material@~1.1:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/angular-material/-/angular-material-1.1.4.tgz#27de35646f54ccd320080af0c708e1b438af87f6"
 
-angular-translate-loader-static-files@^2.15.1:
-  version "2.15.1"
-  resolved "https://registry.yarnpkg.com/angular-translate-loader-static-files/-/angular-translate-loader-static-files-2.15.1.tgz#28a729dd40c470993f7d10043a64d0073d17461a"
+angular-translate-loader-static-files@^2.16:
+  version "2.16.0"
+  resolved "https://registry.yarnpkg.com/angular-translate-loader-static-files/-/angular-translate-loader-static-files-2.16.0.tgz#ba78bbe592495e05f8223f272f22fbe61d67a8df"
   dependencies:
-    angular-translate "~2.15.1"
+    angular-translate "~2.16.0"
 
-angular-translate@^2.15.1, angular-translate@~2.15.1:
-  version "2.15.1"
-  resolved "https://registry.yarnpkg.com/angular-translate/-/angular-translate-2.15.1.tgz#920f7d2b877819e1c0fa881781b9b675f36480ce"
+angular-translate@^2.16, angular-translate@~2.16.0:
+  version "2.16.0"
+  resolved "https://registry.yarnpkg.com/angular-translate/-/angular-translate-2.16.0.tgz#6b7f84657d6534d25878cc55e6a2a06f7607299f"
   dependencies:
     angular ">=1.2.26 <=1.6"
 
-angular-ui-router@^1.0.3:
+angular-ui-router@~1.0:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/angular-ui-router/-/angular-ui-router-1.0.3.tgz#bf2494caae95c37cf01af3761d89747cfed2db45"
   dependencies:
     "@uirouter/core" "5.0.3"
 
-"angular@>=1.2.26 <=1.6", angular@~1.5.11:
+"angular@>=1.2.26 <=1.6":
   version "1.5.11"
   resolved "https://registry.yarnpkg.com/angular/-/angular-1.5.11.tgz#8c5ba7386f15965c9acf3429f6881553aada30d6"
+
+angular@~1.6:
+  version "1.6.7"
+  resolved "https://registry.yarnpkg.com/angular/-/angular-1.6.7.tgz#0f89837dae1776b01ccb1fa2096db0d9373d9897"
 
 ansi-escapes@^1.1.0:
   version "1.4.0"

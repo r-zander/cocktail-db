@@ -1,5 +1,6 @@
 import './vendor';
 import './index.scss';
+import './angular-material.scss';
 
 import {themeConfig} from './config/theme.config';
 import {routerConfig} from './ui-routing';

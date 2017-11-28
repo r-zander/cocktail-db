@@ -62,7 +62,7 @@ gulp.task("serve", function (callback) {
 	}
 	devConf.entry = sources; //"./src/app/index.module.js";
 
-	let port = 3000;
+	let port = 4000;
 	devConf.entry.unshift('webpack-dev-server/client?http://localhost:' + port + '/');
 
 	//---- boot server

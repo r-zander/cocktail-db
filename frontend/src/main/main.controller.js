@@ -2,6 +2,8 @@ import './main.scss';
 import './main.html';
 import './bottomSheet.html';
 
+/* global angular */
+
 export class MainController {
 	constructor($mdBottomSheet, databaseService) {
 		'ngInject';
@@ -41,15 +43,19 @@ export class MainController {
 				ingredients: this.ingredients
 			},
 			bindToController: true,
-		});
+            escapeToClose: false,
+		}).then(result => {
+			console.log(result);
+		}).catch(() => {});
 	}
 }
 
 class BottomSheetController {
-	constructor($scope) {
+	constructor($scope, $mdBottomSheet) {
 		'ngInject';
 
 		this.$scope = $scope;
+		this.$mdBottomSheet = $mdBottomSheet;
 
 		$scope.cocktail = {
 			ingredients: []
@@ -80,4 +86,47 @@ class BottomSheetController {
 
 		return this.ingredients;
 	}
+
+	isValid(){
+        let cocktail = this.$scope.cocktail;
+        if (!cocktail.name){
+			return false;
+		}
+
+		if (cocktail.ingredients.length < 2){
+        	return false;
+		}
+
+		// At least 2 valid ingredients are required
+		return cocktail.ingredients.filter((ingredient) => {
+			return ingredient.item && ingredient.item.Name && ingredient.amount > 0;
+		}).length >= 2;
+	}
+
+    cancel(){
+		this.$mdBottomSheet.cancel();
+	}
+
+	save(){
+        let cocktail = this.$scope.cocktail;
+
+        let result = {
+    		cocktail: {
+    			name: cocktail.name,
+				ingredients: [],
+			}
+		};
+
+        cocktail.ingredients.forEach(ingredient => {
+        	if (angular.isObject(ingredient.item) &&
+                angular.isNumber(ingredient.amount)) {
+                result.cocktail.ingredients.push({
+                    id: ingredient.item.ID,
+                    amount: ingredient.amount
+                });
+            }
+		});
+
+        this.$mdBottomSheet.hide(result);
+    }
 }
