@@ -1,20 +1,20 @@
 export function routerConfig($stateProvider, $urlRouterProvider) {
-	'ngInject';
+    'ngInject';
 
-	$stateProvider
-		.state('main', {
-			url: '/',
-			controller: 'MainController as ctrl',
-			templateUrl: 'main/main.html',
-		})
+    $stateProvider
+        .state('main', {
+            url: '/',
+            controller: 'MainController as ctrl',
+            templateUrl: 'main/main.html',
+        })
 
-		.state('error', {
-			url: '/error/{statusCode}',
-			templateUrl: 'error/404.html',
-		});
+        .state('error', {
+            url: '/error/{statusCode}',
+            templateUrl: 'error/404.html',
+        });
 
-	$urlRouterProvider.otherwise('/error/404');
+    $urlRouterProvider.otherwise('/error/404');
 
-	// Redirect to index page
-	$urlRouterProvider.when('', '/');
+    // Redirect to index page
+    $urlRouterProvider.when('', '/');
 }

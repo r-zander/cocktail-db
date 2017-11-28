@@ -8,15 +8,15 @@ import {MainController} from "./main/main.controller";
 import {DatabaseService} from "./api/database.service";
 
 let app = angular.module('app', [
-	'ngAnimate',
-	'ngCookies',
-	'ngMaterial',
-	'ui.router',
-	'pascalprecht.translate',
+    'ngAnimate',
+    'ngCookies',
+    'ngMaterial',
+    'ui.router',
+    'pascalprecht.translate',
 ])
-	.config(themeConfig)
-	.config(routerConfig)
+    .config(themeConfig)
+    .config(routerConfig)
 
-	.service('databaseService', DatabaseService)
+    .service('databaseService', DatabaseService)
 
-	.controller('MainController', MainController);
+    .controller('MainController', MainController);

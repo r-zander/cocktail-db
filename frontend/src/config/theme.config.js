@@ -1,9 +1,9 @@
 export function themeConfig($mdThemingProvider) {
-	'ngInject';
+    'ngInject';
 
-	$mdThemingProvider.theme('default')
-		.primaryPalette('pink')
-		.accentPalette('light-blue')
-		.warnPalette('red')
-		.dark();
+    $mdThemingProvider.theme('default')
+        .primaryPalette('pink')
+        .accentPalette('light-blue')
+        .warnPalette('red')
+        .dark();
 }
