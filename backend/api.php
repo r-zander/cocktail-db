@@ -1,8 +1,8 @@
+<?php
 // PHP CRUD API by Maurits van der Schee
 // Version 1.2.8 2017-10-17
 // https://github.com/mevdschee/php-crud-api
 
-<?php
 //var_dump($_SERVER['REQUEST_METHOD'],$_SERVER['PATH_INFO']); die();
 
 interface DatabaseInterface {
@@ -95,9 +95,9 @@ class MySQL implements DatabaseInterface {
 					k2."REFERENCED_TABLE_NAME" COLLATE \'utf8_bin\' IN ?',
 			'reflect_columns'=> 'SELECT
 					"COLUMN_NAME", "COLUMN_DEFAULT", "IS_NULLABLE", "DATA_TYPE", "CHARACTER_MAXIMUM_LENGTH"
-				FROM 
-					"INFORMATION_SCHEMA"."COLUMNS" 
-				WHERE 
+				FROM
+					"INFORMATION_SCHEMA"."COLUMNS"
+				WHERE
 					"TABLE_NAME" = ? AND
 					"TABLE_SCHEMA" = ?
 				ORDER BY
@@ -336,8 +336,8 @@ class PostgreSQL implements DatabaseInterface {
 					cub2."table_name" in ?',
 			'reflect_columns'=> 'select
 					"column_name", "column_default", "is_nullable", "data_type", "character_maximum_length"
-				from 
-					"information_schema"."columns" 
+				from
+					"information_schema"."columns"
 				where
 					"table_name" = ? and
 					"table_schema" = \'public\' and
@@ -587,9 +587,9 @@ class SQLServer implements DatabaseInterface {
 					cub2."TABLE_NAME" IN ?',
 			'reflect_columns'=> 'SELECT
 					"COLUMN_NAME", "COLUMN_DEFAULT", "IS_NULLABLE", "DATA_TYPE", "CHARACTER_MAXIMUM_LENGTH"
-				FROM 
-					"INFORMATION_SCHEMA"."COLUMNS" 
-				WHERE 
+				FROM
+					"INFORMATION_SCHEMA"."COLUMNS"
+				WHERE
 					"TABLE_NAME" LIKE ? AND
 					"TABLE_CATALOG" = ?
 				ORDER BY
@@ -834,12 +834,12 @@ class SQLServer implements DatabaseInterface {
 		$f = function($f,$a) use ($t) {
 			$c = null;
 			if ($t($a)=='null') {
-				$c = null; 
+				$c = null;
 			} else if ($t($a)=='boolean') {
 				$b = substr(strtolower($a->textContent),0,1);
 				$c = in_array($b,array('1','t'));
 			} else if ($t($a)=='number') {
-				$c = $a->textContent+0; 
+				$c = $a->textContent+0;
 			} else if ($t($a)=='string') {
 				$c = $a->textContent;
 			} else if ($t($a)=='object') {
@@ -928,9 +928,9 @@ class SQLite implements DatabaseInterface {
 					k2."table" IN ?',
 			'reflect_columns'=> 'SELECT
 					"name", "dflt_value", case when "notnull"==1 then \'no\' else \'yes\' end as "nullable", "type", 2147483647
-				FROM 
+				FROM
 					"sys/columns"
-				WHERE 
+				WHERE
 					"self"=?
 				ORDER BY
 					"cid"'
@@ -2268,7 +2268,7 @@ class PHP_CRUD_API {
 		foreach ($tables as $t=>$table)	{
 			$table_list = array($table['name']);
 			$table_fields = $this->findFields($table_list,false,false,false,$database);
-			
+
 			// extensions
 			$result = $this->db->query($this->db->getSql('reflect_belongs_to'),array($table_list[0],$table_names,$database,$database));
 			while ($row = $this->db->fetchRow($result)) {
@@ -2639,7 +2639,7 @@ class PHP_CRUD_API {
 		if (isset($_SERVER['REQUEST_METHOD'])) {
 			header('Access-Control-Allow-Credentials: true');
 			foreach (explode(',',$allowOrigins) as $o) {
-				if (preg_match('/^'.str_replace('\*','.*',preg_quote(strtolower(trim($o)))).'$/',$origin)) { 
+				if (preg_match('/^'.str_replace('\*','.*',preg_quote(strtolower(trim($o)))).'$/',$origin)) {
 					header('Access-Control-Allow-Origin: '.$origin);
 					break;
 				}

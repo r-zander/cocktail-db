@@ -5,7 +5,7 @@
 			<input ng-model="cocktail.Name"/>
 		</md-input-container>
 
-		<div ng-repeat="ingredient in cocktail.ingredients">
+		<div ng-repeat="ingredient in cocktail.ingredients" layout="row">
 			<md-autocomplete
 					md-selected-item="ingredient.Name"
 					md-selected-item-change="ctrl.ensureIngredientsCapacity($index+2)"
@@ -22,6 +22,9 @@
 					<a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
 				</md-not-found>
 			</md-autocomplete>
+
+			<!--<div>ingredient</div>-->
+			<!--<input>-->
 		</div>
 		<div layout="row" layout-align="end center">
 			<md-button class="md-raised">
