@@ -11,18 +11,18 @@
 					class="hide-md-errors-spacer"
 					md-selected-item="ingredient.item"
 					md-selected-item-change="ctrl.ensureIngredientsCapacity($index+2)"
-					md-search-text="searchText"
-					md-items="item in ctrl.querySearch(searchText)"
+					md-search-text="ingredient.searchText"
+					md-items="item in ctrl.querySearch(ingredient.searchText)"
 					md-item-text="item.Name"
 					md-min-length="0"
 					md-floating-label="Ingredient">
 				<md-item-template>
-					<span md-highlight-text="searchText" md-highlight-flags="^i">{{item.Name}}</span>
+					<span md-highlight-text="ingredient.searchText" md-highlight-flags="i">{{item.Name}}</span>
 				</md-item-template>
 				<md-not-found>
-					<a ng-click="ctrl.newIngredient(ingredient, searchText)"
+					<a ng-click="ctrl.newIngredient(ingredient, ingredient.searchText)"
 					   class="layout-fill-link">
-						Add "{{searchText}}"
+						Add "{{ingredient.searchText}}"
 					</a>
 				</md-not-found>
 			</md-autocomplete>
@@ -31,19 +31,18 @@
 					ng-if="ingredient.item.new"
 					class="hide-md-errors-spacer"
 					md-selected-item="ingredient.item.Einheit"
-					md-selected-item-change="ctrl.ensureIngredientsCapacity($index+2)"
-					md-search-text="searchText"
-					md-items="item in ctrl.querySearch(searchText)"
-					md-item-text="item.Name"
+					md-search-text="searchUnit[$index]"
+					md-items="unit in ctrl.querySearchUnit(searchUnit[$index])"
+					md-item-text="unit"
 					md-min-length="0"
-					md-floating-label="Ingredient">
+					md-floating-label="Unit">
 				<md-item-template>
-					<span md-highlight-text="searchText" md-highlight-flags="^i">{{item.Name}}</span>
+					<span md-highlight-text="searchUnit[$index]" md-highlight-flags="^i">{{unit}}</span>
 				</md-item-template>
 				<md-not-found>
-					<a ng-click="ctrl.newIngredient(ingredient, searchText)"
+					<a ng-click="ctrl.newUnit(ingredient, searchUnit[$index])"
 					   class="layout-fill-link">
-						Add "{{searchText}}"
+						{{searchUnit[$index]}}
 					</a>
 				</md-not-found>
 			</md-autocomplete>

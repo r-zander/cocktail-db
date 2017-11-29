@@ -69,8 +69,21 @@ class BottomSheetController {
         $scope.cocktail = {
             ingredients: [],
         };
+        $scope.searchText = [];
+        $scope.searchUnit = [];
 
         this.ensureIngredientsCapacity(1);
+
+        this.units = this.ingredients.map(ingredient => {
+            return ingredient.Einheit;
+        });
+        this.units.sort((a, b) => {
+            return a.toLowerCase().localeCompare(b.toLowerCase());
+        });
+        // Transform Array to Set to distinct values
+        // and convert back to Array with '...' spread operator
+        this.units = [...new Set(this.units)];
+
     }
 
     ensureIngredientsCapacity(capacity) {
@@ -87,9 +100,10 @@ class BottomSheetController {
 
     querySearch(query) {
         if (query) {
+            // query = query.toLowerCase();
             return this.ingredients.filter((ingredient) => {
-                let lowercaseQuery = query.toLowerCase();
-                return (ingredient.Name.indexOf(lowercaseQuery) === 0)
+                return ingredient.Name.match(new RegExp(query, 'gi'));
+                // return (ingredient.Name.toLowerCase().indexOf(query) >= 0)
             });
         }
 
@@ -97,16 +111,19 @@ class BottomSheetController {
     }
 
     newIngredient(ingredient, newIngredientName) {
-        this.databaseService.createIngredient({name: newIngredientName})
-            .then(newIngredientId => {
-                ingredient.item = {
-                    ID: newIngredientId,
-                    Name: newIngredientName,
-                    new: true,
-                };
+        ingredient.item = {
+            Name: newIngredientName,
+            new: true,
+        };
+    }
 
-                this.ingredients.push(ingredient.item);
-            });
+    querySearchUnit(query) {
+        if (query) {
+            return this.units.filter(unit => {
+                return unit.match(new RegExp(query, 'gi'));
+            })
+        }
+        return this.units;
     }
 
     isValid() {
