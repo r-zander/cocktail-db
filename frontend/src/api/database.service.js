@@ -56,7 +56,7 @@ export class DatabaseService {
                 })
             }).then(response => {
                 let newIngredientIds = response.data;
-                let newIngredients = recipe.newIngredients.map(ingredient => {
+                let newIngredients = recipe.newIngredients.map((ingredient, index) => {
                     return {
                         id: newIngredientIds[index],
                         amount: ingredient.amount
@@ -68,10 +68,6 @@ export class DatabaseService {
         } else {
             promise = this.$q.resolve(recipe.ingredients);
         }
-        // TODO neue zutat ids verlinken
-        // Idee: das erste promise returned ein array aus ingredients -
-        // entweder einfach so, oder im falle neuer Ingredients mit existierenden und aufgelösten Ingredients
-
 
         return promise.then(() => {
             return this.$http({
