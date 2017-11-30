@@ -153,16 +153,25 @@ class BottomSheetController {
             cocktail: {
                 name: cocktail.name,
                 ingredients: [],
+                newIngredients: [],
             },
         };
 
         cocktail.ingredients.forEach(ingredient => {
             if (angular.isObject(ingredient.item) &&
                 angular.isNumber(ingredient.amount)) {
-                result.cocktail.ingredients.push({
-                    id: ingredient.item.ID,
-                    amount: ingredient.amount,
-                });
+                if (ingredient.item.new) {
+                    result.cocktail.newIngredients.push({
+                        name: ingredient.item.Name,
+                        unit: ingredient.searchUnit,
+                        amount: ingredient.amount
+                    });
+                } else {
+                    result.cocktail.ingredients.push({
+                        id: ingredient.item.ID,
+                        amount: ingredient.amount,
+                    });
+                }
             }
         });
 

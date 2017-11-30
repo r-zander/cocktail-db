@@ -31,20 +31,14 @@
 					ng-if="ingredient.item.new"
 					class="hide-md-errors-spacer"
 					md-selected-item="ingredient.item.Einheit"
-					md-search-text="searchUnit[$index]"
-					md-items="unit in ctrl.querySearchUnit(searchUnit[$index])"
+					md-search-text="ingredient.searchUnit"
+					md-items="unit in ctrl.querySearchUnit(ingredient.searchUnit)"
 					md-item-text="unit"
 					md-min-length="0"
 					md-floating-label="Unit">
 				<md-item-template>
-					<span md-highlight-text="searchUnit[$index]" md-highlight-flags="^i">{{unit}}</span>
+					<span md-highlight-text="ingredient.searchUnit" md-highlight-flags="^i">{{unit}}</span>
 				</md-item-template>
-				<md-not-found>
-					<a ng-click="ctrl.newUnit(ingredient, searchUnit[$index])"
-					   class="layout-fill-link">
-						{{searchUnit[$index]}}
-					</a>
-				</md-not-found>
 			</md-autocomplete>
 
 			<md-input-container class="hide-md-errors-spacer" ng-if="ingredient.item">

@@ -41,6 +41,26 @@ export class DatabaseService {
      * @return Promise<number> id of new cocktail
      */
     createCocktailWithRecipe(recipe) {
+        recipe = angular.copy(recipe);
+        let promise;
+        if (recipe.newIngredients.length > 0) {
+
+            promise = this.$http({
+                method: 'POST',
+                url: this.baseUrl + 'zutat',
+                data: recipe.newIngredients.map(ingredient => {
+                    return {
+                        Name: ingredient.name,
+                        Einheit: ingredient.unit
+                    }
+                })
+            });
+        }
+        // TODO neue zutat ids verlinken
+        // Idee: das erste promise returned ein array aus ingredients -
+        // entweder einfach so, oder im falle neuer Ingredients mit existierenden und aufgelösten Ingredients
+
+
         return this.$http({
             method: 'POST',
             url: this.baseUrl + 'cocktail',
