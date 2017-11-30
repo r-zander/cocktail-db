@@ -17,11 +17,27 @@
 				</md-list>
 			</md-tab>
 			<md-tab label="Recipes">
-				<md-list>
-					<md-list-item ng-repeat="cocktail in ctrl.cocktails">
-						<span>{{cocktail.Name}}</span>
-					</md-list-item>
-				</md-list>
+                <expansion-panel ng-repeat="recipe in ctrl.recipes"
+                                 expanded="recipe.expanded"
+                                 class="md-margin">
+                    <expansion-header layout="row" layout-align="start center">
+                        <div ng-class="{'md-truncate': !recipe.expanded}" flex="auto">
+                            {{recipe.name}}
+                        </div>
+                        <md-icon class="expand-icon"
+                                 ng-class="{rotated: recipe.expanded}">
+                            expand_more
+                        </md-icon>
+                    </expansion-header>
+                    <expansion-body>
+                        <strong>Ingredients:</strong>
+                        <md-list>
+                            <md-list-item ng-repeat="ingredient in recipe.ingredients">
+                                <span>{{ingredient.amount}}{{ingredient.unit}} {{ingredient.name}}</span>
+                            </md-list-item>
+                        </md-list>
+                    </expansion-body>
+                </expansion-panel>
 			</md-tab>
 			<md-tab label="Inventory">
 				<md-list>

@@ -16,6 +16,30 @@ export class DatabaseService {
         });
     }
 
+    getRecipes() {
+        return this.$http({
+            method: 'GET',
+            url: this.baseUrl + 'cocktail' + '?include=zutat' + '&transform=1',
+        }).then(response => {
+            return response.data.cocktail.map(cocktail => {
+                let recipe = {
+                    id: cocktail.ID,
+                    name: cocktail.Name,
+                };
+                recipe.ingredients = cocktail.rezept.map(rezept => {
+                    let ingredient = rezept.zutat[0];
+                    return {
+                        id: ingredient.ID,
+                        name: ingredient.Name,
+                        unit: ingredient.Einheit,
+                        amount: rezept.Menge,
+                    };
+                });
+                return recipe;
+            });
+        });
+    }
+
     getInventory() {
         return this.$http({
             method: 'GET',
@@ -51,15 +75,15 @@ export class DatabaseService {
                 data: recipe.newIngredients.map(ingredient => {
                     return {
                         Name: ingredient.name,
-                        Einheit: ingredient.unit
+                        Einheit: ingredient.unit,
                     }
-                })
+                }),
             }).then(response => {
                 let newIngredientIds = response.data;
                 let newIngredients = recipe.newIngredients.map((ingredient, index) => {
                     return {
                         id: newIngredientIds[index],
-                        amount: ingredient.amount
+                        amount: ingredient.amount,
                     }
                 });
                 recipe.ingredients = recipe.ingredients.concat(newIngredients);

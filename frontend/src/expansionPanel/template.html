@@ -1,0 +1,10 @@
+<md-button ng-click="ctrl.toggle()" ng-if="ctrl.manageExpansion">
+    <div ng-transclude="header"></div>
+</md-button>
+<div class="md-button"
+     md-ink-ripple="black"
+     ng-transclude="header"
+     ng-if="!ctrl.manageExpansion">
+</div>
+
+<div ng-show="ctrl.expanded" ng-transclude="body" class="expansion-body"></div>

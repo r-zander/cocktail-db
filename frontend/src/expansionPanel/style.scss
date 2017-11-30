@@ -1,0 +1,73 @@
+@import 'src/theme-colors';
+
+expansion-panel,
+expansion-header,
+expansion-body {
+  display: block;
+}
+
+expansion-panel {
+  background-color: $background-hue-1;
+  transition: margin 225ms cubic-bezier(.4, 0, .2, 1);
+
+  > .md-button {
+    margin: 0;
+    padding: 0 24px;
+    height: 48px;
+
+    font-size: 15px;
+    font-weight: 400;
+    text-transform: none;
+    line-height: 20px;
+    white-space: normal;
+
+    text-align: start;
+    -webkit-box-align: start;
+    -webkit-align-items: flex-start;
+
+    > div {
+      height: 100%;
+
+      > expansion-header {
+        height: 100%;
+      }
+    }
+
+    > expansion-header {
+      height: 100%;
+    }
+  }
+
+  &.expanded {
+    > .md-button {
+      height: 64px;
+    }
+
+    + expansion-panel {
+      margin-top: 16px;
+    }
+  }
+
+  + expansion-panel.expanded {
+    margin-top: 16px;
+  }
+
+  > .expansion-body {
+    margin: 0 24px 16px;
+    font-size: 14px;
+    line-height: 20px;
+
+    // If the body is empty, hide it so that its padding/margin wont show up.
+    &:empty {
+      display: none;
+    }
+  }
+}
+
+md-icon.expand-icon {
+  transition: transform 225ms cubic-bezier(.4, 0, .2, 1);
+
+  &.rotated {
+    transform: rotate(180deg);
+  }
+}

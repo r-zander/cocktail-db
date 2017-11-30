@@ -64,3 +64,11 @@ html {
     display: none;
   }
 }
+
+md-icon.expand-icon {
+  transition: transform 225ms cubic-bezier(.4, 0, .2, 1);
+
+  &.rotated {
+    transform: rotate(180deg);
+  }
+}

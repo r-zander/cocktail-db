@@ -18,8 +18,8 @@ export class MainController {
 
     loadLists() {
 // TODO alles in der Datenbank sortieren
-        this.databaseService.getCocktails().then(cocktails => {
-            this.cocktails = cocktails
+        this.databaseService.getRecipes().then(recipes => {
+            this.recipes = recipes
         });
         this.databaseService.getInventory().then(inventory => {
             this.inventory = inventory.filter(item => {
@@ -55,6 +55,10 @@ export class MainController {
             this.loadLists();
         }).catch(() => {
         });
+    }
+
+    show(whatever) {
+        console.log(whatever);
     }
 }
 
