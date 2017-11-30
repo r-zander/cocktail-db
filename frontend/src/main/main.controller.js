@@ -18,9 +18,9 @@ export class MainController {
     }
 
     loadLists() {
-// TODO alles in der Datenbank sortieren
+        // TODO alles in der Datenbank sortieren
         this.databaseService.getRecipes().then(recipes => {
-            this.recipes = recipes
+            this.recipes = this.mapRecipes(recipes);
         });
         this.databaseService.getInventory().then(inventory => {
             this.inventory = inventory.filter(item => {
@@ -34,6 +34,20 @@ export class MainController {
                 return drink.Anzahl > 0;
             });
         });
+    }
+
+    mapRecipes(recipes){
+        recipes.forEach(recipe => {
+            recipe.ingredients.forEach(ingredient => {
+                if (ingredient.stockAmount === 0){
+                    ingredient.missing = true;
+                } else if (ingredient.amount > ingredient.stockAmount) {
+                    ingredient.insufficient = true;
+                }
+            })
+        });
+
+        return recipes;
     }
 
     openBottomSheet() {
@@ -72,7 +86,11 @@ export class MainController {
                 // TODO muss in der Datenbank passieren
                 return drink.Anzahl > 0;
             });
-        });
+
+            return this.databaseService.getRecipes()
+        }).then(recipes => {
+            this.recipes = this.mapRecipes(recipes);
+        });;
     }
 }
 

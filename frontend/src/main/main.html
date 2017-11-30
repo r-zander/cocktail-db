@@ -5,11 +5,11 @@
 </md-toolbar>
 
 <main id="main" layout="column" flex="auto" layout-align="start center">
-    <div class="tab-wrapper">
+	<div class="tab-wrapper">
 		<md-tabs md-selected="ctrl.selectedTab"
-                 md-stretch-tabs="always"
-                 md-border-bottom="true"
-                 flex="auto">
+		         md-stretch-tabs="always"
+		         md-border-bottom="true"
+		         flex="auto">
 			<md-tab label="Mixable Drinks">
 				<md-list>
 					<md-list-item ng-repeat="drink in ctrl.mixableDrinks">
@@ -18,55 +18,73 @@
 				</md-list>
 			</md-tab>
 			<md-tab label="Recipes">
-                <expansion-panel ng-repeat="recipe in ctrl.recipes"
-                                 expanded="recipe.expanded"
-                                 class="md-margin">
-                    <expansion-header layout="row" layout-align="start center">
-                        <div ng-class="{'md-truncate': !recipe.expanded}" flex="auto">
-                            {{recipe.name}}
-                        </div>
-                        <md-icon class="expand-icon"
-                                 ng-class="{rotated: recipe.expanded}">
-                            expand_more
-                        </md-icon>
-                    </expansion-header>
-                    <expansion-body>
-                        <strong>Ingredients:</strong>
-                        <md-list>
-                            <md-list-item ng-repeat="ingredient in recipe.ingredients">
-                                <div class="ingredient" layout="row">
-                                    <div class="measurement">
-                                        <span class="amount">{{ingredient.amount}}</span>
-                                        <span class="unit">{{ingredient.unit}}</span>
-                                    </div>
-                                    <span class="name">{{ingredient.name}}</span>
-                                </div>
-                            </md-list-item>
-                        </md-list>
-                    </expansion-body>
-                </expansion-panel>
+				<expansion-panel ng-repeat="recipe in ctrl.recipes"
+				                 expanded="recipe.expanded"
+				                 class="md-margin">
+					<expansion-header layout="row" layout-align="start center">
+						<div ng-class="{'md-truncate': !recipe.expanded}" flex="auto">
+							{{recipe.name}}
+						</div>
+						<md-icon class="expand-icon"
+						         ng-class="{rotated: recipe.expanded}">
+							expand_more
+						</md-icon>
+					</expansion-header>
+					<expansion-body>
+						<strong>Ingredients:</strong>
+						<md-list>
+							<md-list-item ng-repeat="ingredient in recipe.ingredients">
+								<div class="ingredient" layout="row"
+								     ng-class="{'missing': ingredient.missing,
+                                                'insufficient': ingredient.insufficient}">
+									<div class="measurement">
+										<span class="amount">{{ingredient.amount}}</span>
+										<span class="unit">{{ingredient.unit}}</span>
+									</div>
+									<span class="name">{{ingredient.name}}</span>
+								</div>
+								<div class="ingredient md-secondary"
+								     ng-class="{'missing': ingredient.missing,
+                                                'insufficient': ingredient.insufficient}">
+									<span ng-if="ingredient.insufficient">{{ingredient.stockAmount}} {{ingredient.unit}}</span>
+									<span ng-if="ingredient.missing">---</span>
+								</div>
+
+								<md-tooltip ng-if="ingredient.insufficient"
+								            md-direction="right">
+									There's only {{ingredient.stockAmount}} {{ingredient.unit}} in stock.
+								</md-tooltip>
+
+								<md-tooltip ng-if="ingredient.missing"
+								            md-direction="right">
+									This ingredient is not in stock!
+								</md-tooltip>
+							</md-list-item>
+						</md-list>
+					</expansion-body>
+				</expansion-panel>
 			</md-tab>
 			<md-tab label="Inventory">
-                <div ng-repeat="item in ctrl.inventory"
-                     layout="row"
-                     layout-align="start end"
-                     class="inventory-item md-margin">
-                    <div class="name">{{item.Name}}</div>
+				<div ng-repeat="item in ctrl.inventory"
+				     layout="row"
+				     layout-align="start end"
+				     class="inventory-item md-margin">
+					<div class="name">{{item.Name}}</div>
 
-                    <md-input-container class="measurement hide-md-errors-spacer">
-                        <label>{{item.Einheit}}</label>
-                        <input type="number"
-                               ng-model="item.Inventarmenge"
-                               ng-change="item.changed = true">
-                    </md-input-container>
+					<md-input-container class="measurement hide-md-errors-spacer">
+						<label>{{item.Einheit}}</label>
+						<input type="number"
+						       ng-model="item.Inventarmenge"
+						       ng-change="item.changed = true">
+					</md-input-container>
 
-                    <md-button class="md-primary"
-                               ng-show="item.changed"
-                               ng-disabled="item.disabled"
-                               ng-click="ctrl.saveInventoryItem(item)">
-                        Save
-                    </md-button>
-                </div>
+					<md-button class="md-primary"
+					           ng-show="item.changed"
+					           ng-disabled="item.disabled"
+					           ng-click="ctrl.saveInventoryItem(item)">
+						Save
+					</md-button>
+				</div>
 			</md-tab>
 			<md-tab label="Ingredients">
 				<md-list>

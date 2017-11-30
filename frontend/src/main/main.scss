@@ -31,6 +31,14 @@
 
 .ingredient {
 
+  &.insufficient {
+    color: $accent;
+  }
+
+  &.missing {
+    color: $primary;
+  }
+
   > .measurement {
     min-width: 6em;
     text-align: right;

@@ -33,6 +33,7 @@ export class DatabaseService {
                         name: ingredient.Name,
                         unit: ingredient.Einheit,
                         amount: rezept.Menge,
+                        stockAmount: ingredient.Inventarmenge
                     };
                 });
                 return recipe;
