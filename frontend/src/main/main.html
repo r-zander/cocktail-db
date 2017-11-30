@@ -5,10 +5,11 @@
 </md-toolbar>
 
 <main id="main" layout="column" flex="auto" layout-align="start center">
-	<div class="tab-wrapper" md-whiteframe="1" md-colors="{'background-color': 'background-hue-1'}">
+    <div class="tab-wrapper">
 		<md-tabs md-selected="ctrl.selectedTab"
-		         md-stretch-tabs="always"
-		         flex="auto">
+                 md-stretch-tabs="always"
+                 md-border-bottom="true"
+                 flex="auto">
 			<md-tab label="Mixable Drinks">
 				<md-list>
 					<md-list-item ng-repeat="drink in ctrl.mixableDrinks">
@@ -33,21 +34,39 @@
                         <strong>Ingredients:</strong>
                         <md-list>
                             <md-list-item ng-repeat="ingredient in recipe.ingredients">
-                                <span>{{ingredient.amount}}{{ingredient.unit}} {{ingredient.name}}</span>
+                                <div class="ingredient" layout="row">
+                                    <div class="measurement">
+                                        <span class="amount">{{ingredient.amount}}</span>
+                                        <span class="unit">{{ingredient.unit}}</span>
+                                    </div>
+                                    <span class="name">{{ingredient.name}}</span>
+                                </div>
                             </md-list-item>
                         </md-list>
                     </expansion-body>
                 </expansion-panel>
 			</md-tab>
 			<md-tab label="Inventory">
-				<md-list>
-					<md-list-item ng-repeat="item in ctrl.inventory" class="md-2-line">
-						<div class="md-list-item-text" layout="column">
-							<h3>{{item.Name}}</h3>
-							<p>{{item.Inventarmenge}} {{item.Einheit}}</p>
-						</div>
-					</md-list-item>
-				</md-list>
+                <div ng-repeat="item in ctrl.inventory"
+                     layout="row"
+                     layout-align="start end"
+                     class="inventory-item md-margin">
+                    <div class="name">{{item.Name}}</div>
+
+                    <md-input-container class="measurement hide-md-errors-spacer">
+                        <label>{{item.Einheit}}</label>
+                        <input type="number"
+                               ng-model="item.Inventarmenge"
+                               ng-change="item.changed = true">
+                    </md-input-container>
+
+                    <md-button class="md-primary"
+                               ng-show="item.changed"
+                               ng-disabled="item.disabled"
+                               ng-click="ctrl.saveInventoryItem(item)">
+                        Save
+                    </md-button>
+                </div>
 			</md-tab>
 			<md-tab label="Ingredients">
 				<md-list>

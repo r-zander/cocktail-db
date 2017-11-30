@@ -28,3 +28,34 @@
   margin: 0 -15px;
   padding: 0 15px;
 }
+
+.ingredient {
+
+  > .measurement {
+    min-width: 6em;
+    text-align: right;
+    margin-right: 1em;
+  }
+
+  > .name {
+  }
+}
+
+.inventory-item {
+  > .name {
+    min-width: 10em;
+    font-size: 15px;
+    line-height: 26px;
+    margin-bottom: 4px;
+  }
+
+  > .measurement {
+    margin-bottom: 0;
+    font-size: 15px;
+  }
+
+  > .md-button {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}

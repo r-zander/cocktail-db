@@ -5,10 +5,11 @@ import './bottomSheet.html';
 /* global angular */
 
 export class MainController {
-    constructor($mdBottomSheet, databaseService) {
+    constructor($mdBottomSheet, $mdToast, databaseService) {
         'ngInject';
 
         this.$mdBottomSheet = $mdBottomSheet;
+        this.$mdToast = $mdToast;
         this.databaseService = databaseService;
 
         this.loadLists();
@@ -57,8 +58,21 @@ export class MainController {
         });
     }
 
-    show(whatever) {
-        console.log(whatever);
+    saveInventoryItem(item) {
+        item.disabled = true;
+        this.databaseService.updateInventoryItem(item).then(() => {
+            this.$mdToast.showSimple('Inventory item updated.');
+            item.disabled = false;
+            item.changed = false;
+
+            // Reload mixable drinks, as they can have changed
+            return this.databaseService.getMixableDrinks();
+        }).then(mixableDrinks => {
+            this.mixableDrinks = mixableDrinks.filter(drink => {
+                // TODO muss in der Datenbank passieren
+                return drink.Anzahl > 0;
+            });
+        });
     }
 }
 

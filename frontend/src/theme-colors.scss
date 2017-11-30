@@ -68,10 +68,15 @@ $accent: $light-blue-500;
 $warn: $red-500;
 $background: $grey-A400; // Light: Grey-50
 
-$foreground-1: rgba(255, 255, 255, 1.0); // Light: rgba(0, 0, 0, 0.87);
-$foreground-2: rgba(255, 255, 255, 0.7); // Light: rgba(0, 0, 0, 0.54);
-$foreground-3: rgba(255, 255, 255, 0.5); // Light: rgba(0, 0, 0, 0.38);
-$foreground-4: rgba(255, 255, 255, 0.12); // Light: rgba(0, 0, 0, 0.12);
+$foreground-1: rgba(255, 255, 255, 1.0);
+$foreground-2: rgba(255, 255, 255, 0.7);
+$foreground-3: rgba(255, 255, 255, 0.5);
+$foreground-4: rgba(255, 255, 255, 0.12);
+
+$light-foreground-1: rgba(0, 0, 0, 0.87);
+$light-foreground-2: rgba(0, 0, 0, 0.54);
+$light-foreground-3: rgba(0, 0, 0, 0.38);
+$light-foreground-4: rgba(0, 0, 0, 0.12);
 
 $primary-hue-1: $pink-300;
 $primary-hue-2: $pink-800;

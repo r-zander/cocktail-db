@@ -123,14 +123,12 @@ export class DatabaseService {
         });
     }
 
-    createIngredient(ingredient) {
+    updateInventoryItem(item) {
         return this.$http({
-            method: 'POST',
-            url: this.baseUrl + 'zutat',
+            method: 'PUT',
+            url: this.baseUrl + 'zutat/' + item.ID,
             data: {
-                Name: ingredient.name,
-                Menge: ingredient.amount,
-                Einheit: ingredient.unit,
+                Inventarmenge: item.Inventarmenge,
             },
         }).then(response => {
             return response.data;

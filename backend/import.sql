@@ -1,11 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `cocktail_db` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `cocktail_db`;
-
--- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.17, for macos10.12 (x86_64)
 --
--- Host: localhost    Database: cocktail_db
+-- Host: et-ops.ovivacoach.com    Database: cocktail_db
 -- ------------------------------------------------------
--- Server version	5.7.16-log
+-- Server version	5.5.57-MariaDB-1~wheezy
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -29,7 +28,7 @@ CREATE TABLE `cocktail` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -84,7 +83,9 @@ CREATE TABLE `rezept` (
   `Menge` smallint(6) NOT NULL,
   PRIMARY KEY (`Cocktail_ID`,`Zutat_ID`),
   KEY `fk_Rezepte_Cocktail1_idx` (`Cocktail_ID`),
-  CONSTRAINT `fk_Rezepte_Cocktail1` FOREIGN KEY (`Cocktail_ID`) REFERENCES `cocktail` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_Rezepte_Zutat1_idx` (`Zutat_ID`),
+  CONSTRAINT `fk_Rezepte_Cocktail1` FOREIGN KEY (`Cocktail_ID`) REFERENCES `cocktail` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_Rezepte_Zutat1` FOREIGN KEY (`Zutat_ID`) REFERENCES `zutat` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -111,7 +112,7 @@ CREATE TABLE `zutat` (
   `Inventarmenge` smallint(6) NOT NULL,
   `Einheit` varchar(10) NOT NULL COMMENT 'zB.: ml, cl, Scheiben oder Stück',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -120,7 +121,7 @@ CREATE TABLE `zutat` (
 
 LOCK TABLES `zutat` WRITE;
 /*!40000 ALTER TABLE `zutat` DISABLE KEYS */;
-INSERT INTO `zutat` VALUES (1,'Gin',400,'ml'),(2,'Tonic Water',1000,'ml'),(3,'Zitrone',10,'Scheibe'),(4,'Campari',0,'ml'),(5,'Roter Wermut',0,'ml');
+INSERT INTO `zutat` VALUES (1,'Gin',400,'ml'),(2,'Tonic Water',1300,'ml'),(3,'Zitrone',10,'Scheibe'),(4,'Campari',0,'ml'),(5,'Roter Wermut',0,'ml');
 /*!40000 ALTER TABLE `zutat` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -177,4 +178,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-28  9:19:51
+-- Dump completed on 2017-11-30 19:54:53
