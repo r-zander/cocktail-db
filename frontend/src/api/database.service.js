@@ -1,9 +1,10 @@
 export class DatabaseService {
-    constructor($http) {
+    constructor($http, $q) {
         'ngInject';
 
         this.baseUrl = '//localhost/cocktail-db/api.php/';
         this.$http = $http;
+        this.$q = $q;
     }
 
     getCocktails() {
@@ -44,7 +45,6 @@ export class DatabaseService {
         recipe = angular.copy(recipe);
         let promise;
         if (recipe.newIngredients.length > 0) {
-
             promise = this.$http({
                 method: 'POST',
                 url: this.baseUrl + 'zutat',
@@ -54,19 +54,33 @@ export class DatabaseService {
                         Einheit: ingredient.unit
                     }
                 })
+            }).then(response => {
+                let newIngredientIds = response.data;
+                let newIngredients = recipe.newIngredients.map(ingredient => {
+                    return {
+                        id: newIngredientIds[index],
+                        amount: ingredient.amount
+                    }
+                });
+                recipe.ingredients = recipe.ingredients.concat(newIngredients);
+                return recipe.ingredients;
             });
+        } else {
+            promise = this.$q.resolve(recipe.ingredients);
         }
         // TODO neue zutat ids verlinken
         // Idee: das erste promise returned ein array aus ingredients -
         // entweder einfach so, oder im falle neuer Ingredients mit existierenden und aufgelösten Ingredients
 
 
-        return this.$http({
-            method: 'POST',
-            url: this.baseUrl + 'cocktail',
-            data: {
-                Name: recipe.name,
-            },
+        return promise.then(() => {
+            return this.$http({
+                method: 'POST',
+                url: this.baseUrl + 'cocktail',
+                data: {
+                    Name: recipe.name,
+                },
+            })
         }).then(response => {
             return response.data;
         }).then(newCocktailId => {
