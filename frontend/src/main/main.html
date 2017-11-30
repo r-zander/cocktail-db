@@ -85,6 +85,58 @@
 						Save
 					</md-button>
 				</div>
+
+				<div>
+					<md-autocomplete
+							flex="auto"
+							class="hide-md-errors-spacer"
+							md-selected-item="ctrl.newInventoryItem.ingredient"
+							md-search-text="ctrl.newInventoryItem.searchText"
+							md-items="item in ctrl.ingredientsQuerySearch(ctrl.newInventoryItem.searchText)"
+							md-item-text="item.Name"
+							md-min-length="0"
+							md-floating-label="Ingredient">
+						<md-item-template>
+							<span md-highlight-text="ctrl.newInventoryItem.searchText" md-highlight-flags="i">{{item.Name}}</span>
+						</md-item-template>
+						<md-not-found>
+							<a ng-click="ctrl.newIngredient(ctrl.newInventoryItem, ctrl.newInventoryItem.searchText)"
+							   class="layout-fill-link">
+								Add "{{ctrl.newInventoryItem.searchText}}"
+							</a>
+						</md-not-found>
+					</md-autocomplete>
+
+					<!-- TODO Implementieren, dass man Zutaten, die noch keine Menge haben, hinzufügen kann -->
+					<!-- TODO VOrschläge filtern nach menge == 0 -->
+					<md-autocomplete
+							ng-if="ingredient.item.new"
+							class="hide-md-errors-spacer"
+							md-selected-item="ctrl.newInventoryItem.ingredient.Einheit"
+							md-search-text="ctrl.newInventoryItem.searchUnit"
+							md-items="unit in ctrl.querySearchUnit(ctrl.newInventoryItem.searchUnit)"
+							md-item-text="ctrl.newInventoryItem.unit"
+							md-min-length="0"
+							md-floating-label="Unit">
+						<md-item-template>
+							<span md-highlight-text="ctrl.newInventoryItem.searchUnit" md-highlight-flags="^i">{{ctrl.newInventoryItem.unit}}</span>
+						</md-item-template>
+					</md-autocomplete>
+
+					<md-input-container class="measurement hide-md-errors-spacer">
+						<label>{{item.Einheit}}</label>
+						<input type="number"
+						       ng-model="item.Inventarmenge"
+						       ng-change="item.changed = true">
+					</md-input-container>
+
+					<md-button class="md-primary"
+					           ng-show="item.changed"
+					           ng-disabled="item.disabled"
+					           ng-click="ctrl.saveInventoryItem(item)">
+						Save
+					</md-button>
+				</div>
 			</md-tab>
 			<md-tab label="Ingredients">
 				<md-list>
@@ -101,29 +153,4 @@
 			<md-icon>add</md-icon>
 		</md-button>
 	</div>
-	<!--<md-fab-toolbar md-direction="left">
-		<md-fab-trigger>
-			<md-button class="md-fab">
-				<md-icon>add</md-icon>
-			</md-button>
-		</md-fab-trigger>
-
-		<md-toolbar>
-			&lt;!&ndash;<md-fab-actions class="md-toolbar-tools">
-				<md-button aria-label="comment" class="md-icon-button">
-					<md-icon md-svg-src="img/icons/ic_comment_24px.svg"></md-icon>
-				</md-button>
-				<md-button aria-label="label" class="md-icon-button">
-					<md-icon md-svg-src="img/icons/ic_label_24px.svg"></md-icon>
-				</md-button>
-				<md-button aria-label="photo" class="md-icon-button">
-					<md-icon md-svg-src="img/icons/ic_photo_24px.svg"></md-icon>
-				</md-button>
-			</md-fab-actions>&ndash;&gt;
-
-
-		</md-toolbar>
-	</md-fab-toolbar>-->
-
-
 </main>

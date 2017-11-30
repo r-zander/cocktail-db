@@ -90,7 +90,24 @@ export class MainController {
             return this.databaseService.getRecipes()
         }).then(recipes => {
             this.recipes = this.mapRecipes(recipes);
-        });;
+        });
+    }
+
+    ingredientsQuerySearch(query) {
+        if (query) {
+            return this.ingredients.filter((ingredient) => {
+                return ingredient.Name.match(new RegExp(query, 'gi'));
+            });
+        }
+
+        return this.ingredients;
+    }
+
+    newIngredient(ingredient, newIngredientName) {
+        ingredient.item = {
+            Name: newIngredientName,
+            new: true,
+        };
     }
 }
 
@@ -136,10 +153,8 @@ class BottomSheetController {
 
     querySearch(query) {
         if (query) {
-            // query = query.toLowerCase();
             return this.ingredients.filter((ingredient) => {
                 return ingredient.Name.match(new RegExp(query, 'gi'));
-                // return (ingredient.Name.toLowerCase().indexOf(query) >= 0)
             });
         }
 
