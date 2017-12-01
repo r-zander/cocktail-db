@@ -15,6 +15,8 @@ export class MainController {
         this.loadLists();
 
         this.selectedTab = 1;
+
+        this.newIntentoryItem = {};
     }
 
     loadLists() {
@@ -23,10 +25,11 @@ export class MainController {
             this.recipes = this.mapRecipes(recipes);
         });
         this.databaseService.getInventory().then(inventory => {
-            this.inventory = inventory.filter(item => {
-                return item.Inventarmenge > 0;
-            });
+            this.inventory = inventory;
             this.ingredients = inventory;
+            this.units = this.ingredients.map(ingredient => {
+                return ingredient.Einheit;
+            });
         });
         this.databaseService.getMixableDrinks().then(mixableDrinks => {
             this.mixableDrinks = mixableDrinks.filter(drink => {
@@ -36,10 +39,14 @@ export class MainController {
         });
     }
 
-    mapRecipes(recipes){
+    inventoryFilter(item) {
+        return item.Inventarmenge > 0;
+    }
+
+    mapRecipes(recipes) {
         recipes.forEach(recipe => {
             recipe.ingredients.forEach(ingredient => {
-                if (ingredient.stockAmount === 0){
+                if (ingredient.stockAmount === 0) {
                     ingredient.missing = true;
                 } else if (ingredient.amount > ingredient.stockAmount) {
                     ingredient.insufficient = true;
@@ -93,14 +100,26 @@ export class MainController {
         });
     }
 
+    addInventoryItem(item){
+        // TODO
+        this.newIntentoryItem = {};
+        if (item.new){
+            // Create in DB
+        } else {
+            // Update Inventarmenge
+        }
+    }
+
     ingredientsQuerySearch(query) {
         if (query) {
             return this.ingredients.filter((ingredient) => {
-                return ingredient.Name.match(new RegExp(query, 'gi'));
+                return !this.inventoryFilter(ingredient) &&  ingredient.Name.match(new RegExp(query, 'gi'));
             });
         }
 
-        return this.ingredients;
+        return this.ingredients.filter((ingredient) => {
+            return !this.inventoryFilter(ingredient);
+        });
     }
 
     newIngredient(ingredient, newIngredientName) {
