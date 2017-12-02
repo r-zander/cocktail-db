@@ -7,6 +7,11 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
             controller: 'MainController as ctrl',
             templateUrl: 'main/main.html',
         })
+        .state('login', {
+            url: '/login',
+            controller: 'LoginController as ctrl',
+            templateUrl: 'login/login.html',
+        })
 
         .state('error', {
             url: '/error/{statusCode}',

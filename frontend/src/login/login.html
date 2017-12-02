@@ -1,0 +1,26 @@
+<md-toolbar class="md-hue-2">
+	<div class="md-toolbar-tools">
+		<h2 flex md-truncate>Can I have a drink?</h2>
+	</div>
+</md-toolbar>
+
+<main id="login" layout="column" flex="auto" layout-align="center center">
+	<div>
+		<form name="login" ng-submit="ctrl.login()" layout="column">
+			<md-input-container>
+				<label>Name</label>
+				<input ng-model="ctrl.username">
+			</md-input-container>
+
+			<md-input-container>
+				<label>Password</label>
+				<input ng-model="ctrl.password" type="password">
+			</md-input-container>
+
+			<md-button type="submit" class="md-primary"
+			           ng-disabled="!(ctrl.username && ctrl.password)">
+				Login
+			</md-button>
+		</form>
+	</div>
+</main>

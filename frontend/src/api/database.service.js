@@ -1,10 +1,32 @@
 export class DatabaseService {
-    constructor($http, $q) {
+    constructor($http, $q, $httpParamSerializerJQLike) {
         'ngInject';
 
         this.baseUrl = '//localhost/cocktail-db/api.php/';
         this.$http = $http;
         this.$q = $q;
+        this.$httpParamSerializerJQLike = $httpParamSerializerJQLike;
+    }
+
+    postForm(req) {
+        let prototypeReq = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+        };
+
+        // serialize params
+        req.data = this.$httpParamSerializerJQLike(req.data).replace(/%5B%5D/g, '');
+
+        return this.$http(angular.extend(prototypeReq, req));
+    }
+
+    login(username, password) {
+        return this.postForm({
+            url: this.baseUrl,
+            data: {username, password}
+        }).then(response => {
+            this.csrfToken = response.data.match(/[^"]+/)[0];
+        });
     }
 
     getCocktails() {
@@ -19,7 +41,12 @@ export class DatabaseService {
     getRecipes() {
         return this.$http({
             method: 'GET',
-            url: this.baseUrl + 'cocktail' + '?include=zutat' + '&transform=1',
+            url: this.baseUrl + 'cocktail',
+            params: {
+                csrf: this.csrfToken,
+                include: 'zutat',
+                transform: 1
+            }
         }).then(response => {
             return response.data.cocktail.map(cocktail => {
                 let recipe = {
@@ -121,6 +148,18 @@ export class DatabaseService {
             }).then(() => {
                 return newCocktailId;
             });
+        });
+    }
+
+    createInventoryItem(item) {
+        return this.$http({
+            method: 'POST',
+            url: this.baseUrl + 'zutat',
+            data: {
+                Name: item.Name,
+                Einheit: item.Einheit,
+                Inventarmenge: item.Inventarmenge,
+            }
         });
     }
 

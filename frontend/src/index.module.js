@@ -7,6 +7,7 @@ import {routerConfig} from './ui-routing';
 import {MainController} from "./main/main.controller";
 import {DatabaseService} from "./api/database.service";
 import {ExpansionPanelDirective} from './expansionPanel/expansionPanel.directive';
+import {LoginController} from "./login/login.controller";
 
 let app = angular.module('app', [
     'ngAnimate',
@@ -22,4 +23,5 @@ let app = angular.module('app', [
 
     .service('databaseService', DatabaseService)
 
+    .controller('LoginController', LoginController)
     .controller('MainController', MainController);

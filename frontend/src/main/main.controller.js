@@ -16,7 +16,7 @@ export class MainController {
 
         this.selectedTab = 1;
 
-        this.newIntentoryItem = {};
+        // this.newIntentoryItem = {};
     }
 
     loadLists() {
@@ -26,10 +26,24 @@ export class MainController {
         });
         this.databaseService.getInventory().then(inventory => {
             this.inventory = inventory;
+            this.inventory.forEach(item => {
+                if (item.Inventarmenge <= 0) {
+                    item.outOfStock = true;
+                }
+            });
             this.ingredients = inventory;
+
+            // Derive units from ingredients
+            // TODO Database query?
             this.units = this.ingredients.map(ingredient => {
                 return ingredient.Einheit;
             });
+            this.units.sort((a, b) => {
+                return a.toLowerCase().localeCompare(b.toLowerCase());
+            });
+            // Transform Array to Set to distinct values
+            // and convert back to Array with '...' spread operator
+            this.units = [...new Set(this.units)];
         });
         this.databaseService.getMixableDrinks().then(mixableDrinks => {
             this.mixableDrinks = mixableDrinks.filter(drink => {
@@ -40,7 +54,7 @@ export class MainController {
     }
 
     inventoryFilter(item) {
-        return item.Inventarmenge > 0;
+        return !item.outOfStock;
     }
 
     mapRecipes(recipes) {
@@ -68,6 +82,7 @@ export class MainController {
                     return this.selectedTab;
                 },
                 ingredients: this.ingredients,
+                unit: this.units,
             },
             bindToController: true,
             escapeToClose: false,
@@ -85,35 +100,37 @@ export class MainController {
             this.$mdToast.showSimple('Inventory item updated.');
             item.disabled = false;
             item.changed = false;
+            item.outOfStock = item.Inventarmenge <= 0;
 
             // Reload mixable drinks, as they can have changed
-            return this.databaseService.getMixableDrinks();
-        }).then(mixableDrinks => {
-            this.mixableDrinks = mixableDrinks.filter(drink => {
-                // TODO muss in der Datenbank passieren
-                return drink.Anzahl > 0;
-            });
-
-            return this.databaseService.getRecipes()
-        }).then(recipes => {
-            this.recipes = this.mapRecipes(recipes);
+            this.loadLists();
         });
     }
 
-    addInventoryItem(item){
-        // TODO
-        this.newIntentoryItem = {};
-        if (item.new){
+    addInventoryItem(item) {
+        this.newIntentoryItem = null;
+
+        // Update Inventarmenge
+        item.Inventarmenge = item.preliminaryStockAmount;
+
+        let promise;
+        if (item.new) {
             // Create in DB
+            promise = this.databaseService.createInventoryItem(item);
         } else {
-            // Update Inventarmenge
+            promise = this.databaseService.updateInventoryItem(item);
         }
+
+        promise.then(() => {
+            this.loadLists();
+            item.outOfStock = item.Inventarmenge <= 0;
+        });
     }
 
     ingredientsQuerySearch(query) {
         if (query) {
             return this.ingredients.filter((ingredient) => {
-                return !this.inventoryFilter(ingredient) &&  ingredient.Name.match(new RegExp(query, 'gi'));
+                return !this.inventoryFilter(ingredient) && ingredient.Name.match(new RegExp(query, 'gi'));
             });
         }
 
@@ -122,11 +139,20 @@ export class MainController {
         });
     }
 
-    newIngredient(ingredient, newIngredientName) {
-        ingredient.item = {
+    newIngredient(newIngredientName) {
+        this.newIntentoryItem = {
             Name: newIngredientName,
             new: true,
         };
+    }
+
+    querySearchUnit(query) {
+        if (query) {
+            return this.units.filter(unit => {
+                return unit.match(new RegExp(query, 'gi'));
+            })
+        }
+        return this.units;
     }
 }
 
@@ -145,17 +171,6 @@ class BottomSheetController {
         $scope.searchUnit = [];
 
         this.ensureIngredientsCapacity(1);
-
-        this.units = this.ingredients.map(ingredient => {
-            return ingredient.Einheit;
-        });
-        this.units.sort((a, b) => {
-            return a.toLowerCase().localeCompare(b.toLowerCase());
-        });
-        // Transform Array to Set to distinct values
-        // and convert back to Array with '...' spread operator
-        this.units = [...new Set(this.units)];
-
     }
 
     ensureIngredientsCapacity(capacity) {

@@ -31,7 +31,11 @@
 						</md-icon>
 					</expansion-header>
 					<expansion-body>
-						<strong>Ingredients:</strong>
+						<div layout="row" layout-align="space-between center"
+						     style="padding: 0 16px;">
+							<strong>Ingredients:</strong>
+							<span>In stock</span>
+						</div>
 						<md-list>
 							<md-list-item ng-repeat="ingredient in recipe.ingredients">
 								<div class="ingredient" layout="row"
@@ -46,7 +50,7 @@
 								<div class="ingredient md-secondary"
 								     ng-class="{'missing': ingredient.missing,
                                                 'insufficient': ingredient.insufficient}">
-									<span ng-if="ingredient.insufficient">{{ingredient.stockAmount}} {{ingredient.unit}}</span>
+									<span ng-if="!ingredient.missing">{{ingredient.stockAmount}} {{ingredient.unit}}</span>
 									<span ng-if="ingredient.missing">---</span>
 								</div>
 
@@ -86,54 +90,55 @@
 					</md-button>
 				</div>
 
-				<div>
+				<div layout="row" class="md-margin">
 					<md-autocomplete
 							flex="auto"
 							class="hide-md-errors-spacer"
 							md-selected-item="ctrl.newIntentoryItem"
-							md-search-text="ctrl.newIntentoryItem.searchText"
-							md-items="item in ctrl.ingredientsQuerySearch(ctrl.newIntentoryItem.searchText)"
-							md-item-text="ctrl.newIntentoryItem.Name"
+							md-search-text="ctrl.newIntentoryItemSearchText"
+							md-items="item in ctrl.ingredientsQuerySearch(ctrl.newIntentoryItemSearchText)"
+							md-item-text="item.Name"
 							md-min-length="0"
 							md-floating-label="Ingredient">
 						<md-item-template>
-							<span md-highlight-text="ctrl.newIntentoryItem.searchText" md-highlight-flags="i">{{item.Name}}</span>
+							<span md-highlight-text="ctrl.newIntentoryItemSearchText" md-highlight-flags="i">{{item.Name}}</span>
 						</md-item-template>
 						<md-not-found>
-							<a ng-click="ctrl.newIngredient(ctrl.newIntentoryItem, ctrl.newIntentoryItem.searchText)"
+							<a ng-click="ctrl.newIngredient(ctrl.newIntentoryItemSearchText)"
 							   class="layout-fill-link">
-								Add "{{ctrl.newIntentoryItem.searchText}}"
+								Add "{{ctrl.newIntentoryItemSearchText}}"
 							</a>
 						</md-not-found>
 					</md-autocomplete>
 
-					<!-- TODO Implementieren, dass man Zutaten, die noch keine Menge haben, hinzufügen kann -->
-					<!-- TODO VOrschläge filtern nach menge == 0 -->
 					<md-autocomplete
 							ng-if="ctrl.newIntentoryItem.new"
 							class="hide-md-errors-spacer"
 							md-selected-item="ctrl.newIntentoryItem.Einheit"
-							md-search-text="ctrl.newIntentoryItem.searchUnit"
-							md-items="unit in ctrl.querySearchUnit(ctrl.newIntentoryItem.searchUnit)"
+							md-search-text="ctrl.newIntentoryItemSearchUnit"
+							md-search-text-change="ctrl.newIntentoryItem.Einheit = ctrl.newIntentoryItemSearchUnit"
+							md-items="unit in ctrl.querySearchUnit(ctrl.newIntentoryItemSearchUnit)"
 							md-item-text="unit"
 							md-min-length="0"
 							md-floating-label="Unit">
 						<md-item-template>
-							<span md-highlight-text="ctrl.newIntentoryItem.searchUnit" md-highlight-flags="^i">{{unit}}</span>
+							<span md-highlight-text="ctrl.newIntentoryItemSearchUnit" md-highlight-flags="^i">{{unit}}</span>
 						</md-item-template>
 					</md-autocomplete>
 
-					<md-input-container class="measurement hide-md-errors-spacer">
+					<md-input-container class="hide-md-errors-spacer">
 						<label>{{ctrl.newIntentoryItem.Einheit}}</label>
 						<input type="number"
-						       ng-model="ctrl.newIntentoryItem.Inventarmenge">
+						       ng-model="ctrl.newIntentoryItem.preliminaryStockAmount">
 					</md-input-container>
 
-					<md-button class="md-primary"
-					           ng-disabled="!(ctrl.newIntentoryItem && ctrl.newIntentoryItem.Einheit && ctrl.newIntentoryItem.Inventarmenge)"
-					           ng-click="ctrl.addInventoryItem(item)">
-						Save
-					</md-button>
+					<div layout="row" layout-align="center center">
+						<md-button class="md-primary"
+						           ng-disabled="!(ctrl.newIntentoryItem && ctrl.newIntentoryItem.Einheit && ctrl.newIntentoryItem.preliminaryStockAmount)"
+						           ng-click="ctrl.addInventoryItem(ctrl.newIntentoryItem)">
+							Save
+						</md-button>
+					</div>
 				</div>
 			</md-tab>
 			<md-tab label="Ingredients">
