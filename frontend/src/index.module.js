@@ -8,6 +8,7 @@ import {MainController} from "./main/main.controller";
 import {DatabaseService} from "./api/database.service";
 import {ExpansionPanelDirective} from './expansionPanel/expansionPanel.directive';
 import {LoginController} from "./login/login.controller";
+import {httpConfig} from './config/http.config';
 
 let app = angular.module('app', [
     'ngAnimate',
@@ -18,6 +19,7 @@ let app = angular.module('app', [
 ])
     .config(themeConfig)
     .config(routerConfig)
+	.config(httpConfig)
 
     .directive('expansionPanel', ExpansionPanelDirective)
 

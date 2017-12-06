@@ -15,7 +15,7 @@ module.exports.start = function (bsConfig) {
 	const server = {
 		middleware: proxyMiddleware('/cocktail-db', {
 			target: conf.proxyHost,
-			// changeOrigin: true
+			changeOrigin: true,
 		}),
 		baseDir: conf.paths.dist
 	};

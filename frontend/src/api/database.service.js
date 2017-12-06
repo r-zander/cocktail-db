@@ -2,7 +2,7 @@ export class DatabaseService {
     constructor($http, $q, $httpParamSerializerJQLike) {
         'ngInject';
 
-        this.baseUrl = '//localhost/cocktail-db/api.php/';
+		this.baseUrl = '/cocktail-db/api.php/';
         this.$http = $http;
         this.$q = $q;
         this.$httpParamSerializerJQLike = $httpParamSerializerJQLike;

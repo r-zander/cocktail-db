@@ -1,5 +1,5 @@
 <?php
-// PHP CRUD API by Maurits van der Schee
+// PHP API AUTH by Maurits van der Schee
 // Version 2017-03-07
 // https://github.com/mevdschee/php-api-auth
 

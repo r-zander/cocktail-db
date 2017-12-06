@@ -75,7 +75,14 @@ gulp.task("serve", function (callback) {
 		contentBase: path.join(__dirname, "dist"),
 		port: port,
 		disableHostCheck: true,
-		watchContentBase: true
+		watchContentBase: true,
+		proxy: {
+			'/cocktail-db/**': {
+				target: conf.proxyHost,
+				secure: false,
+				changeOrigin: true,
+			},
+		},
 	}).listen(port, "0.0.0.0", function (err) {
 		if (err) {
 			throw new gutil.PluginError("webpack-dev-server", err);

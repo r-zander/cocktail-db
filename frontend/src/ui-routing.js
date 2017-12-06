@@ -3,7 +3,7 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
 
     $stateProvider
         .state('main', {
-            url: '',
+			url: '/',
             controller: 'MainController as ctrl',
             templateUrl: 'main/main.html',
         })
@@ -19,4 +19,5 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
         });
 
     $urlRouterProvider.otherwise('/error/404');
+	$urlRouterProvider.when('', '/');
 }

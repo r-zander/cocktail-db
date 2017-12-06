@@ -2691,8 +2691,14 @@ require 'auth.php'; // from the PHP-API-AUTH project, see: https://github.com/me
 
 // uncomment the lines below for form+session based authentication (see "login.html"):
 
+$credentials = parse_ini_file('credentials.ini', TRUE);
+
 $auth = new PHP_API_AUTH(array(
-	'authenticator'=>function($user,$pass){ $_SESSION['user']=($user=='admin' && $pass=='admin'); }
+    'authenticator' => function ($user, $pass) {
+        global $credentials;
+        $_SESSION['user'] = (array_key_exists($user, $credentials['accounts'])
+            && $credentials['accounts'][$user] == $pass);
+    }
 ));
 if ($auth->executeCommand()) exit(0);
 if (empty($_SESSION['user']) || !$auth->hasValidCsrfToken()) {
@@ -2702,14 +2708,7 @@ if (empty($_SESSION['user']) || !$auth->hasValidCsrfToken()) {
 
 // uncomment the lines below when running in stand-alone mode:
 
-$api = new PHP_CRUD_API(array(
-	'dbengine'=>'MySQL',
-	'hostname'=>'localhost',
-	'username'=>'root',
-	'password'=>'root',
-	'database'=>'cocktail_db',
-	'charset'=>'utf8'
-));
+$api = new PHP_CRUD_API($credentials['database']);
 $api->executeCommand();
 
 // For Microsoft SQL Server 2012 use:
