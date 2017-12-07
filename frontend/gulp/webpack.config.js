@@ -64,7 +64,8 @@ module.exports = {
 		new SimpleProgressPlugin(),
 		new ExtractTextPlugin('styles.[chunkhash:8].css'),
 		new HtmlWebpackPlugin({
-			template: 'src/index.ejs'
+            template: 'src/index.ejs',
+            baseUrl: '/cocktail-db/'
 		})
 	]
 };

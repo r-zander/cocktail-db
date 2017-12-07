@@ -45,6 +45,12 @@ gulp.task("serve", function (callback) {
 	devConf.stats = devConf.stats || {};
 	devConf.stats.errorDetails = true;
 
+    devConf.plugins.forEach(plugin => {
+        if (plugin.constructor.name === 'HtmlWebpackPlugin') {
+            plugin.options.baseUrl = '/';
+        }
+    });
+
 	//---- entries
 	let sources = [
 		path.join(conf.paths.src, '/index.module.js'),
