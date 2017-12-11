@@ -38,12 +38,13 @@ export class MainController {
             this.units = this.ingredients.map(ingredient => {
                 return ingredient.Einheit;
             });
-            this.units.sort((a, b) => {
-                return a.toLowerCase().localeCompare(b.toLowerCase());
-            });
             // Transform Array to Set to distinct values
             // and convert back to Array with '...' spread operator
             this.units = [...new Set(this.units)];
+			// Sort case insensitive
+			this.units.sort((a, b) => {
+				return a.toLowerCase().localeCompare(b.toLowerCase());
+			});
         });
         this.databaseService.getMixableDrinks().then(mixableDrinks => {
             this.mixableDrinks = mixableDrinks.filter(drink => {
