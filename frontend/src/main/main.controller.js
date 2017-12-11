@@ -32,6 +32,9 @@ export class MainController {
                 }
             });
             this.ingredients = inventory;
+	        this.ingredients.sort((a, b) => {
+		        return a.Name.toLowerCase().localeCompare(b.Name.toLowerCase());
+	        });
 
             // Derive units from ingredients
             // TODO Database query?
@@ -83,7 +86,7 @@ export class MainController {
                     return this.selectedTab;
                 },
                 ingredients: this.ingredients,
-                unit: this.units,
+                units: this.units,
             },
             bindToController: true,
             escapeToClose: false,
