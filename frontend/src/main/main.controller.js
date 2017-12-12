@@ -191,9 +191,14 @@ class BottomSheetController {
 
     querySearch(query) {
         if (query) {
-            return this.ingredients.filter((ingredient) => {
-                return ingredient.Name.match(new RegExp(query, 'gi'));
-            });
+	        let filteredIngredients = this.ingredients.filter((ingredient) => {
+		        return ingredient.Name.match(new RegExp(query, 'gi'));
+	        });
+	        filteredIngredients.push({
+		        Name: query,
+		        new: true,
+	        });
+	        return filteredIngredients;
         }
 
         return this.ingredients;
@@ -204,6 +209,8 @@ class BottomSheetController {
             Name: newIngredientName,
             new: true,
         };
+
+	    this.ensureIngredientsCapacity(this.$scope.cocktail.ingredients.length + 1);
     }
 
     querySearchUnit(query) {

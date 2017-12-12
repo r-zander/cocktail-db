@@ -17,7 +17,11 @@
 					md-min-length="0"
 					md-floating-label="Ingredient">
 				<md-item-template>
-					<span md-highlight-text="ingredient.searchText" md-highlight-flags="i">{{item.Name}}</span>
+					<span ng-if="!item.new" md-highlight-text="ingredient.searchText" md-highlight-flags="i">{{item.Name}}</span>
+					<a ng-if="item.new" ng-click="ctrl.newIngredient(ingredient, ingredient.searchText)"
+					   class="layout-fill-link">
+						Add "{{ingredient.searchText}}"
+					</a>
 				</md-item-template>
 				<md-not-found>
 					<a ng-click="ctrl.newIngredient(ingredient, ingredient.searchText)"
