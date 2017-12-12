@@ -158,6 +158,11 @@ export class MainController {
         }
         return this.units;
     }
+
+    editCocktail($event, recipe){
+	    this.$mdToast.showSimple('Edit');
+	    $event.stopPropagation();
+    }
 }
 
 class BottomSheetController {

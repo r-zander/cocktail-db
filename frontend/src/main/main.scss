@@ -39,11 +39,11 @@
 .ingredient {
 
   &.insufficient {
-    color: $accent;
+    color: $accent-hue-1;
   }
 
   &.missing {
-    color: $primary;
+    color: $primary-hue-1;
   }
 
   > .measurement {
