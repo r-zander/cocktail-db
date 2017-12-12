@@ -22,7 +22,7 @@ exports.paths = {
  * All requests to the `/cocktail-db` path are proxied to `<proxyHost>/cocktail-db`
  * @type {string}
  */
-exports.proxyHost = 'http://localhost';
+exports.proxyHost = 'http://127.0.0.1:80';
 
 /**
  *  Common implementation for an error handler of a Gulp plugin
