@@ -32,7 +32,11 @@ export class DatabaseService {
     getCocktails() {
         return this.$http({
             method: 'GET',
-            url: this.baseUrl + 'cocktail' + '?transform=1',
+            url: this.baseUrl + 'cocktail',
+	        params: {
+		        csrf: this.csrfToken,
+		        transform: 1
+	        }
         }).then(response => {
             return response.data.cocktail;
         });
@@ -44,23 +48,23 @@ export class DatabaseService {
             url: this.baseUrl + 'cocktail',
             params: {
                 csrf: this.csrfToken,
-                include: 'zutat',
+                include: 'ingredient',
                 transform: 1
             }
         }).then(response => {
             return response.data.cocktail.map(cocktail => {
                 let recipe = {
-                    id: cocktail.ID,
-                    name: cocktail.Name,
+                    id: cocktail.id,
+                    name: cocktail.name,
                 };
-                recipe.ingredients = cocktail.rezept.map(rezept => {
-                    let ingredient = rezept.zutat[0];
+                recipe.ingredients = cocktail.recipe.map(recipe => {
+                    let ingredient = recipe.ingredient[0];
                     return {
-                        id: ingredient.ID,
-                        name: ingredient.Name,
-                        unit: ingredient.Einheit,
-                        amount: rezept.Menge,
-                        stockAmount: ingredient.Inventarmenge
+                        id: ingredient.id,
+                        name: ingredient.name,
+                        unit: ingredient.unit,
+                        amount: recipe.amount,
+                        stockAmount: ingredient.stockAmount
                     };
                 });
                 return recipe;
@@ -71,18 +75,26 @@ export class DatabaseService {
     getInventory() {
         return this.$http({
             method: 'GET',
-            url: this.baseUrl + 'zutat' + '?transform=1',
+            url: this.baseUrl + 'ingredient',
+	        params: {
+		        csrf: this.csrfToken,
+		        transform: 1
+	        }
         }).then(response => {
-            return response.data.zutat;
+            return response.data.ingredient;
         });
     }
 
     getMixableDrinks() {
         return this.$http({
             method: 'GET',
-            url: this.baseUrl + 'machbare_cocktails' + '?transform=1',
+            url: this.baseUrl + 'mixable_drinks',
+	        params: {
+		        csrf: this.csrfToken,
+		        transform: 1
+	        }
         }).then(response => {
-            return response.data.machbare_cocktails;
+            return response.data.mixable_drinks;
         });
     }
 
@@ -99,11 +111,11 @@ export class DatabaseService {
         if (recipe.newIngredients.length > 0) {
             promise = this.$http({
                 method: 'POST',
-                url: this.baseUrl + 'zutat',
+                url: this.baseUrl + 'ingredient',
                 data: recipe.newIngredients.map(ingredient => {
                     return {
-                        Name: ingredient.name,
-                        Einheit: ingredient.unit,
+                        name: ingredient.name,
+                        unit: ingredient.unit,
                     }
                 }),
             }).then(response => {
@@ -126,7 +138,7 @@ export class DatabaseService {
                 method: 'POST',
                 url: this.baseUrl + 'cocktail',
                 data: {
-                    Name: recipe.name,
+                    name: recipe.name,
                 },
             })
         }).then(response => {
@@ -135,15 +147,15 @@ export class DatabaseService {
             let recipeRecords = [];
             recipe.ingredients.forEach(ingredient => {
                 recipeRecords.push({
-                    Cocktail_ID: newCocktailId,
-                    Zutat_ID: ingredient.id,
-                    Menge: ingredient.amount,
+                    cocktailId: newCocktailId,
+                    zutatId: ingredient.id,
+                    amount: ingredient.amount,
                 });
             });
 
             return this.$http({
                 method: 'POST',
-                url: this.baseUrl + 'rezept',
+                url: this.baseUrl + 'recipe',
                 data: recipeRecords,
             }).then(() => {
                 return newCocktailId;
@@ -154,11 +166,11 @@ export class DatabaseService {
     createInventoryItem(item) {
         return this.$http({
             method: 'POST',
-            url: this.baseUrl + 'zutat',
+            url: this.baseUrl + 'ingredient',
             data: {
-                Name: item.Name,
-                Einheit: item.Einheit,
-                Inventarmenge: item.Inventarmenge,
+                name: item.name,
+                unit: item.unit,
+                stockAmount: item.stockAmount,
             }
         });
     }
@@ -166,12 +178,22 @@ export class DatabaseService {
     updateInventoryItem(item) {
         return this.$http({
             method: 'PUT',
-            url: this.baseUrl + 'zutat/' + item.ID,
+            url: this.baseUrl + 'ingredient/' + item.id,
             data: {
-                Inventarmenge: item.Inventarmenge,
+                stockAmount: item.stockAmount,
             },
         }).then(response => {
             return response.data;
         });
+    }
+
+    deleteCocktail(cocktailId){
+	    return this.$http({
+		    method: 'DELETE',
+		    url: this.baseUrl + 'cocktail/' + cocktailId,
+	    }).then(response => {
+	        // Number of rows affected
+		    return response.data;
+	    });
     }
 }

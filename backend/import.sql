@@ -51,11 +51,11 @@ DROP TABLE IF EXISTS `cocktail_list`;
 /*!50001 DROP VIEW IF EXISTS `cocktail_list`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE VIEW `cocktail_list` AS SELECT 
+/*!50001 CREATE VIEW `cocktail_list` AS SELECT
  1 AS `cocktail`,
  1 AS `ingredient`,
  1 AS `amount`,
- 1 AS `stock_amount`,
+ 1 AS `stockAmount`,
  1 AS `unit`*/;
 SET character_set_client = @saved_cs_client;
 
@@ -69,7 +69,7 @@ DROP TABLE IF EXISTS `ingredient`;
 CREATE TABLE `ingredient` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
-  `stock_amount` smallint(6) NOT NULL,
+  `stockAmount` smallint(6) NOT NULL,
   `unit` varchar(10) NOT NULL COMMENT 'zB.: ml, cl, Scheiben oder Stück',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
@@ -93,7 +93,7 @@ DROP TABLE IF EXISTS `mixable_drinks`;
 /*!50001 DROP VIEW IF EXISTS `mixable_drinks`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE VIEW `mixable_drinks` AS SELECT 
+/*!50001 CREATE VIEW `mixable_drinks` AS SELECT
  1 AS `cocktail`,
  1 AS `count`*/;
 SET character_set_client = @saved_cs_client;
@@ -106,14 +106,14 @@ DROP TABLE IF EXISTS `recipe`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `recipe` (
-  `cocktail_id` int(11) NOT NULL,
-  `ingredient_id` int(11) NOT NULL,
+  `cocktailId` int(11) NOT NULL,
+  `ingredientId` int(11) NOT NULL,
   `amount` smallint(6) NOT NULL,
-  PRIMARY KEY (`cocktail_id`,`ingredient_id`),
-  KEY `fk_Rezepte_Cocktail1_idx` (`cocktail_id`),
-  KEY `fk_Rezepte_Zutat1_idx` (`ingredient_id`),
-  CONSTRAINT `fk_Rezepte_Cocktail1` FOREIGN KEY (`cocktail_id`) REFERENCES `cocktail` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_Rezepte_Zutat1` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredient` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  PRIMARY KEY (`cocktailId`,`ingredientId`),
+  KEY `fk_Rezepte_Cocktail1_idx` (`cocktailId`),
+  KEY `fk_Rezepte_Zutat1_idx` (`ingredientId`),
+  CONSTRAINT `fk_Rezepte_Cocktail1` FOREIGN KEY (`cocktailId`) REFERENCES `cocktail` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_Rezepte_Zutat1` FOREIGN KEY (`ingredientId`) REFERENCES `ingredient` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -140,7 +140,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `cocktail_list` AS select `c`.`name` AS `cocktail`,`i`.`name` AS `ingredient`,`r`.`amount` AS `amount`,`i`.`stock_amount` AS `stock_amount`,`i`.`unit` AS `unit` from ((`recipe` `r` join `cocktail` `c` on((`r`.`cocktail_id` = `c`.`id`))) join `ingredient` `i` on((`r`.`ingredient_id` = `i`.`id`))) order by `c`.`name` */;
+/*!50001 VIEW `cocktail_list` AS select `c`.`name` AS `cocktail`,`i`.`name` AS `ingredient`,`r`.`amount` AS `amount`,`i`.`stockAmount` AS `stockAmount`,`i`.`unit` AS `unit` from ((`recipe` `r` join `cocktail` `c` on((`r`.`cocktailId` = `c`.`id`))) join `ingredient` `i` on((`r`.`ingredientId` = `i`.`id`))) order by `c`.`name` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -158,7 +158,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `mixable_drinks` AS select `c`.`name` AS `cocktail`,floor(min((`i`.`stock_amount` / `r`.`amount`))) AS `count` from ((`recipe` `r` join `cocktail` `c` on((`c`.`id` = `r`.`cocktail_id`))) join `ingredient` `i` on((`i`.`id` = `r`.`ingredient_id`))) group by `c`.`id` */;
+/*!50001 VIEW `mixable_drinks` AS select `c`.`name` AS `cocktail`,floor(min((`i`.`stockAmount` / `r`.`amount`))) AS `count` from ((`recipe` `r` join `cocktail` `c` on((`c`.`id` = `r`.`cocktailId`))) join `ingredient` `i` on((`i`.`id` = `r`.`ingredientId`))) group by `c`.`id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;

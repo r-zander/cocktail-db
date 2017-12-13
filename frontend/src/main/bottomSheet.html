@@ -13,11 +13,11 @@
 					md-selected-item-change="ctrl.ensureIngredientsCapacity($index+2)"
 					md-search-text="ingredient.searchText"
 					md-items="item in ctrl.querySearch(ingredient.searchText)"
-					md-item-text="item.Name"
+					md-item-text="item.name"
 					md-min-length="0"
 					md-floating-label="Ingredient">
 				<md-item-template>
-					<span ng-if="!item.new" md-highlight-text="ingredient.searchText" md-highlight-flags="i">{{item.Name}}</span>
+					<span ng-if="!item.new" md-highlight-text="ingredient.searchText" md-highlight-flags="i">{{item.name}}</span>
 					<a ng-if="item.new" ng-click="ctrl.newIngredient(ingredient, ingredient.searchText)"
 					   class="layout-fill-link">
 						Add "{{ingredient.searchText}}"
@@ -34,7 +34,7 @@
 			<md-autocomplete
 					ng-if="ingredient.item.new"
 					class="hide-md-errors-spacer"
-					md-selected-item="ingredient.item.Einheit"
+					md-selected-item="ingredient.item.unit"
 					md-search-text="ingredient.searchUnit"
 					md-items="unit in ctrl.querySearchUnit(ingredient.searchUnit)"
 					md-item-text="unit"
@@ -46,7 +46,7 @@
 			</md-autocomplete>
 
 			<md-input-container class="hide-md-errors-spacer" ng-if="ingredient.item">
-				<label>{{ingredient.item.Einheit}}</label>
+				<label>{{ingredient.item.unit}}</label>
 				<input type="number" ng-model="ingredient.amount"/>
 			</md-input-container>
 		</div>

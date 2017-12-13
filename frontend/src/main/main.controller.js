@@ -27,19 +27,19 @@ export class MainController {
         this.databaseService.getInventory().then(inventory => {
             this.inventory = inventory;
             this.inventory.forEach(item => {
-                if (item.Inventarmenge <= 0) {
+                if (item.stockAmount <= 0) {
                     item.outOfStock = true;
                 }
             });
             this.ingredients = inventory;
 	        this.ingredients.sort((a, b) => {
-		        return a.Name.toLowerCase().localeCompare(b.Name.toLowerCase());
+		        return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
 	        });
 
             // Derive units from ingredients
             // TODO Database query?
             this.units = this.ingredients.map(ingredient => {
-                return ingredient.Einheit;
+                return ingredient.unit;
             });
             // Transform Array to Set to distinct values
             // and convert back to Array with '...' spread operator
@@ -52,7 +52,7 @@ export class MainController {
         this.databaseService.getMixableDrinks().then(mixableDrinks => {
             this.mixableDrinks = mixableDrinks.filter(drink => {
                 // TODO muss in der Datenbank passieren
-                return drink.Anzahl > 0;
+                return drink.count > 0;
             });
         });
     }
@@ -104,7 +104,7 @@ export class MainController {
             this.$mdToast.showSimple('Inventory item updated.');
             item.disabled = false;
             item.changed = false;
-            item.outOfStock = item.Inventarmenge <= 0;
+            item.outOfStock = item.stockAmount <= 0;
 
             // Reload mixable drinks, as they can have changed
             this.loadLists();
@@ -114,8 +114,8 @@ export class MainController {
     addInventoryItem(item) {
         this.newIntentoryItem = null;
 
-        // Update Inventarmenge
-        item.Inventarmenge = item.preliminaryStockAmount;
+        // Update stockAmount
+        item.stockAmount = item.preliminaryStockAmount;
 
         let promise;
         if (item.new) {
@@ -127,14 +127,14 @@ export class MainController {
 
         promise.then(() => {
             this.loadLists();
-            item.outOfStock = item.Inventarmenge <= 0;
+            item.outOfStock = item.stockAmount <= 0;
         });
     }
 
     ingredientsQuerySearch(query) {
         if (query) {
             return this.ingredients.filter((ingredient) => {
-                return !this.inventoryFilter(ingredient) && ingredient.Name.match(new RegExp(query, 'gi'));
+                return !this.inventoryFilter(ingredient) && ingredient.name.match(new RegExp(query, 'gi'));
             });
         }
 
@@ -145,7 +145,7 @@ export class MainController {
 
     newIngredient(newIngredientName) {
         this.newIntentoryItem = {
-            Name: newIngredientName,
+            name: newIngredientName,
             new: true,
         };
     }
@@ -160,9 +160,30 @@ export class MainController {
     }
 
     editCocktail($event, recipe){
-	    this.$mdToast.showSimple('Edit');
+	    this.$mdToast.showSimple('Not yet implemented, sorry');
 	    $event.stopPropagation();
     }
+
+    deleteCocktail($event, recipe){
+	    $event.stopPropagation();
+	    this.databaseService.deleteCocktail(recipe.id)
+            .then(() => {
+	            removeArrayElement(this.recipes, recipe);
+	            return this.databaseService.getMixableDrinks().then(mixableDrinks => {
+		            this.mixableDrinks = mixableDrinks.filter(drink => {
+			            // TODO muss in der Datenbank passieren
+			            return drink.count > 0;
+		            });
+	            });
+            });
+    }
+}
+
+function removeArrayElement(array, element) {
+	let index = array.findIndex(e => e === element || e.id === element.id);
+	if (index > -1) {
+		array.splice(index, 1);
+	}
 }
 
 class BottomSheetController {
@@ -197,10 +218,10 @@ class BottomSheetController {
     querySearch(query) {
         if (query) {
 	        let filteredIngredients = this.ingredients.filter((ingredient) => {
-		        return ingredient.Name.match(new RegExp(query, 'gi'));
+		        return ingredient.name.match(new RegExp(query, 'gi'));
 	        });
 	        filteredIngredients.push({
-		        Name: query,
+		        name: query,
 		        new: true,
 	        });
 	        return filteredIngredients;
@@ -211,7 +232,7 @@ class BottomSheetController {
 
     newIngredient(ingredient, newIngredientName) {
         ingredient.item = {
-            Name: newIngredientName,
+            name: newIngredientName,
             new: true,
         };
 
@@ -239,7 +260,7 @@ class BottomSheetController {
 
         // At least 2 valid ingredients are required
         return cocktail.ingredients.filter((ingredient) => {
-            return ingredient.item && ingredient.item.Name && ingredient.amount > 0;
+            return ingredient.item && ingredient.item.name && ingredient.amount > 0;
         }).length >= 2;
     }
 
@@ -263,13 +284,13 @@ class BottomSheetController {
                 angular.isNumber(ingredient.amount)) {
                 if (ingredient.item.new) {
                     result.cocktail.newIngredients.push({
-                        name: ingredient.item.Name,
+                        name: ingredient.item.name,
                         unit: ingredient.searchUnit,
                         amount: ingredient.amount
                     });
                 } else {
                     result.cocktail.ingredients.push({
-                        id: ingredient.item.ID,
+                        id: ingredient.item.id,
                         amount: ingredient.amount,
                     });
                 }

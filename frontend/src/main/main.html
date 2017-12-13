@@ -13,7 +13,7 @@
 			<md-tab label="Mixable Drinks">
 				<md-list>
 					<md-list-item ng-repeat="drink in ctrl.mixableDrinks">
-						<span>{{drink.Anzahl}}x {{drink.Cocktail}}</span>
+						<span>{{drink.count}}x {{drink.cocktail}}</span>
 					</md-list-item>
 				</md-list>
 			</md-tab>
@@ -26,7 +26,7 @@
 							{{recipe.name}}
 						</div>
 						<md-button class="md-icon-button"
-						           ng-show="recipe.expanded"
+						           ng-show="recipe.expanded" ng-disabled="true"
 						           ng-click="ctrl.editCocktail($event, recipe)">
 							<md-icon>edit</md-icon>
 							<md-tooltip>Edit</md-tooltip>
@@ -85,12 +85,12 @@
 				     layout="row"
 				     layout-align="start end"
 				     class="inventory-item md-margin">
-					<div class="name">{{item.Name}}</div>
+					<div class="name">{{item.name}}</div>
 
 					<md-input-container class="measurement hide-md-errors-spacer">
-						<label>{{item.Einheit}}</label>
+						<label>{{item.unit}}</label>
 						<input type="number"
-						       ng-model="item.Inventarmenge"
+						       ng-model="item.stockAmount"
 						       ng-change="item.changed = true">
 					</md-input-container>
 
@@ -109,11 +109,11 @@
 							md-selected-item="ctrl.newIntentoryItem"
 							md-search-text="ctrl.newIntentoryItemSearchText"
 							md-items="item in ctrl.ingredientsQuerySearch(ctrl.newIntentoryItemSearchText)"
-							md-item-text="item.Name"
+							md-item-text="item.name"
 							md-min-length="0"
 							md-floating-label="Ingredient">
 						<md-item-template>
-							<span md-highlight-text="ctrl.newIntentoryItemSearchText" md-highlight-flags="i">{{item.Name}}</span>
+							<span md-highlight-text="ctrl.newIntentoryItemSearchText" md-highlight-flags="i">{{item.name}}</span>
 						</md-item-template>
 						<md-not-found>
 							<a ng-click="ctrl.newIngredient(ctrl.newIntentoryItemSearchText)"
@@ -126,9 +126,9 @@
 					<md-autocomplete
 							ng-if="ctrl.newIntentoryItem.new"
 							class="hide-md-errors-spacer"
-							md-selected-item="ctrl.newIntentoryItem.Einheit"
+							md-selected-item="ctrl.newIntentoryItem.unit"
 							md-search-text="ctrl.newIntentoryItemSearchUnit"
-							md-search-text-change="ctrl.newIntentoryItem.Einheit = ctrl.newIntentoryItemSearchUnit"
+							md-search-text-change="ctrl.newIntentoryItem.unit = ctrl.newIntentoryItemSearchUnit"
 							md-items="unit in ctrl.querySearchUnit(ctrl.newIntentoryItemSearchUnit)"
 							md-item-text="unit"
 							md-min-length="0"
@@ -139,14 +139,14 @@
 					</md-autocomplete>
 
 					<md-input-container class="hide-md-errors-spacer">
-						<label>{{ctrl.newIntentoryItem.Einheit}}</label>
+						<label>{{ctrl.newIntentoryItem.unit}}</label>
 						<input type="number"
 						       ng-model="ctrl.newIntentoryItem.preliminaryStockAmount">
 					</md-input-container>
 
 					<div layout="row" layout-align="center center">
 						<md-button class="md-primary"
-						           ng-disabled="!(ctrl.newIntentoryItem && ctrl.newIntentoryItem.Einheit && ctrl.newIntentoryItem.preliminaryStockAmount)"
+						           ng-disabled="!(ctrl.newIntentoryItem && ctrl.newIntentoryItem.unit && ctrl.newIntentoryItem.preliminaryStockAmount)"
 						           ng-click="ctrl.addInventoryItem(ctrl.newIntentoryItem)">
 							Save
 						</md-button>
@@ -156,7 +156,7 @@
 			<md-tab label="Ingredients">
 				<md-list>
 					<md-list-item ng-repeat="ingredient in ctrl.ingredients">
-						<span>{{ingredient.Name}}</span>
+						<span>{{ingredient.name}}</span>
 					</md-list-item>
 				</md-list>
 			</md-tab>
