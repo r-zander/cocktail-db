@@ -1,6 +1,7 @@
 import './main.scss';
 import './main.html';
 import './bottomSheet.html';
+import {BottomSheetController} from "./bottomSheet.controller";
 
 /* global angular */
 
@@ -75,26 +76,23 @@ export class MainController {
         return recipes;
     }
 
-    openBottomSheet() {
-        this.$mdBottomSheet.show({
+	/**
+     *
+	 * @param updateCocktail a cocktail recipe in database format that can be edited by the user
+	 */
+	openBottomSheet(updateCocktail) {
+        return this.$mdBottomSheet.show({
             templateUrl: 'main/bottomSheet.html',
             preserveScope: true,
             controller: BottomSheetController,
             controllerAs: 'ctrl',
             locals: {
-                selectedTab: () => {
-                    return this.selectedTab;
-                },
                 ingredients: this.ingredients,
                 units: this.units,
+	            updateCocktail: updateCocktail,
             },
             bindToController: true,
             escapeToClose: false,
-        }).then(result => {
-            return this.databaseService.createCocktailWithRecipe(result.cocktail);
-        }).then(() => {
-            this.loadLists();
-        }).catch(() => {
         });
     }
 
@@ -159,9 +157,36 @@ export class MainController {
         return this.units;
     }
 
+	createCocktail() {
+		this.openBottomSheet()
+			.then(result => {
+				return this.databaseService.createCocktailWithRecipe(result.cocktail);
+			}).then(() => {
+                this.loadLists();
+            }).catch(() => {
+            });
+	}
+
+	/**
+     * Edit deletes the current cocktail and creates a new cocktail with updated values.
+	 * @param $event
+	 * @param recipe
+	 */
     editCocktail($event, recipe){
-	    this.$mdToast.showSimple('Not yet implemented, sorry');
 	    $event.stopPropagation();
+	    this.openBottomSheet(recipe)
+            .then(result => {
+                return this.databaseService.deleteCocktail(recipe.id)
+                    .then(() => {
+                        return result;
+                    });
+            })
+		    .then(result => {
+			    return this.databaseService.createCocktailWithRecipe(result.cocktail);
+		    }).then(() => {
+                this.loadLists();
+            }).catch(() => {
+            });
     }
 
     deleteCocktail($event, recipe){
@@ -184,119 +209,4 @@ function removeArrayElement(array, element) {
 	if (index > -1) {
 		array.splice(index, 1);
 	}
-}
-
-class BottomSheetController {
-    constructor($scope, $mdBottomSheet, databaseService) {
-        'ngInject';
-
-        this.$scope = $scope;
-        this.$mdBottomSheet = $mdBottomSheet;
-        this.databaseService = databaseService;
-
-        $scope.cocktail = {
-            ingredients: [],
-        };
-        $scope.searchText = [];
-        $scope.searchUnit = [];
-
-        this.ensureIngredientsCapacity(1);
-    }
-
-    ensureIngredientsCapacity(capacity) {
-        let ingredients = this.$scope.cocktail.ingredients;
-
-        if (capacity > ingredients.length) {
-            for (let i = ingredients.length; i < capacity; i++) {
-                this.$scope.cocktail.ingredients.push({});
-            }
-        } else {
-            ingredients.length = capacity - 1;
-        }
-    }
-
-    querySearch(query) {
-        if (query) {
-	        let filteredIngredients = this.ingredients.filter((ingredient) => {
-		        return ingredient.name.match(new RegExp(query, 'gi'));
-	        });
-	        filteredIngredients.push({
-		        name: query,
-		        new: true,
-	        });
-	        return filteredIngredients;
-        }
-
-        return this.ingredients;
-    }
-
-    newIngredient(ingredient, newIngredientName) {
-        ingredient.item = {
-            name: newIngredientName,
-            new: true,
-        };
-
-	    this.ensureIngredientsCapacity(this.$scope.cocktail.ingredients.length + 1);
-    }
-
-    querySearchUnit(query) {
-        if (query) {
-            return this.units.filter(unit => {
-                return unit.match(new RegExp(query, 'gi'));
-            })
-        }
-        return this.units;
-    }
-
-    isValid() {
-        let cocktail = this.$scope.cocktail;
-        if (!cocktail.name) {
-            return false;
-        }
-
-        if (cocktail.ingredients.length < 2) {
-            return false;
-        }
-
-        // At least 2 valid ingredients are required
-        return cocktail.ingredients.filter((ingredient) => {
-            return ingredient.item && ingredient.item.name && ingredient.amount > 0;
-        }).length >= 2;
-    }
-
-    cancel() {
-        this.$mdBottomSheet.cancel();
-    }
-
-    save() {
-        let cocktail = this.$scope.cocktail;
-
-        let result = {
-            cocktail: {
-                name: cocktail.name,
-                ingredients: [],
-                newIngredients: [],
-            },
-        };
-
-        cocktail.ingredients.forEach(ingredient => {
-            if (angular.isObject(ingredient.item) &&
-                angular.isNumber(ingredient.amount)) {
-                if (ingredient.item.new) {
-                    result.cocktail.newIngredients.push({
-                        name: ingredient.item.name,
-                        unit: ingredient.searchUnit,
-                        amount: ingredient.amount
-                    });
-                } else {
-                    result.cocktail.ingredients.push({
-                        id: ingredient.item.id,
-                        amount: ingredient.amount,
-                    });
-                }
-            }
-        });
-
-        this.$mdBottomSheet.hide(result);
-    }
 }

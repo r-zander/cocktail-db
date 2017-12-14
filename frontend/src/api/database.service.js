@@ -148,7 +148,7 @@ export class DatabaseService {
             recipe.ingredients.forEach(ingredient => {
                 recipeRecords.push({
                     cocktailId: newCocktailId,
-                    zutatId: ingredient.id,
+	                ingredientId: ingredient.id,
                     amount: ingredient.amount,
                 });
             });
